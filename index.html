@@ -3,7 +3,7 @@
  <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260715-05-d05fd84"}');</script><script src="/_sdk/f432b76fb310b513.telemetry_sdk.js" integrity="sha512-9FJQ55EKmmqhyyik8BhrMVfm0+iYYfb8uOlRsjtkxJMEI97qOVEI4PnHohDjQAtvAep0IOEpdQ64eki0sz62ug=="></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Networking and Communication 1</title>
+  <title>Networking and Communication 1 — Lessons 5–8</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
       --ink: #eaf5ff;
       --muted: #9eb4c8;
       --edge: rgba(117, 193, 255, 0.18);
-      --panel: rgba(10, 28, 46, 0.86);
       --cyan: #32d7ff;
       --lime: #a8ff6a;
       --orange: #ffb14a;
@@ -22,23 +21,23 @@
     * { box-sizing: border-box; }
 
     body {
-      margin: 0;
       width: 100%;
-      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      margin: 0;
+      min-height: 100%;
+      background: #061524;
       color: var(--ink);
       font-family: "DM Sans", sans-serif;
       overflow-x: hidden;
-      background: #061524;
     }
 
     .network-shell {
       width: 100%;
-      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      min-height: 100%;
+      position: relative;
       background:
         radial-gradient(circle at 82% 4%, rgba(50, 215, 255, 0.17), transparent 28%),
         radial-gradient(circle at 10% 90%, rgba(168, 255, 106, 0.09), transparent 30%),
         #061524;
-      position: relative;
     }
 
     .network-shell::before {
@@ -51,7 +50,7 @@
         linear-gradient(rgba(117, 193, 255, 0.09) 1px, transparent 1px),
         linear-gradient(90deg, rgba(117, 193, 255, 0.09) 1px, transparent 1px);
       background-size: 42px 42px;
-      mask-image: linear-gradient(to bottom, black, transparent 80%);
+      mask-image: linear-gradient(to bottom, black, transparent 82%);
     }
 
     .mono { font-family: "Space Mono", monospace; }
@@ -63,14 +62,26 @@
       backdrop-filter: blur(12px);
     }
 
+    .lesson-view {
+      display: none;
+      animation: reveal 300ms ease both;
+    }
+
+    .lesson-view.active { display: block; }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .nav-button {
       width: 100%;
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      padding: 0.8rem 0.9rem;
       border: 1px solid transparent;
       border-radius: 0.75rem;
-      padding: 0.8rem 0.9rem;
       color: #aec4d6;
       text-align: left;
       transition: 180ms ease;
@@ -92,18 +103,6 @@
       box-shadow: 0 0 24px rgba(50, 215, 255, 0.26);
     }
 
-    .lesson-view {
-      display: none;
-      animation: reveal 300ms ease both;
-    }
-
-    .lesson-view.active { display: block; }
-
-    @keyframes reveal {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .concept-card {
       border: 1px solid rgba(117, 193, 255, 0.18);
       background: rgba(17, 48, 75, 0.6);
@@ -117,85 +116,8 @@
       color: #d9ffc2;
       border-radius: 999px;
       padding: 0.42rem 0.72rem;
-      font-size: 0.78rem;
       font-family: "Space Mono", monospace;
-    }
-
-    .activity-option,
-    .quiz-option {
-      border: 1px solid rgba(117, 193, 255, 0.22);
-      background: rgba(17, 48, 75, 0.55);
-      color: #d9e9f5;
-      border-radius: 0.7rem;
-      padding: 0.65rem 0.8rem;
-      font-weight: 600;
-      text-align: left;
-      transition: 160ms ease;
-    }
-
-    .activity-option:hover,
-    .activity-option:focus-visible,
-    .quiz-option:hover,
-    .quiz-option:focus-visible {
-      border-color: var(--cyan);
-      background: rgba(50, 215, 255, 0.12);
-      outline: none;
-    }
-
-    .activity-option.correct,
-    .quiz-option.correct {
-      color: #dfffc8;
-      border-color: var(--lime);
-      background: rgba(168, 255, 106, 0.14);
-    }
-
-    .activity-option.wrong,
-    .quiz-option.wrong {
-      color: #ffd0d0;
-      border-color: var(--danger);
-      background: rgba(255, 122, 122, 0.12);
-    }
-
-    .hardware-button {
-      border: 1px solid rgba(117, 193, 255, 0.19);
-      background: rgba(17, 48, 75, 0.5);
-      color: #d7eafb;
-      border-radius: 0.8rem;
-      padding: 0.9rem;
-      text-align: left;
-      transition: 160ms ease;
-    }
-
-    .hardware-button:hover,
-    .hardware-button:focus-visible,
-    .hardware-button.selected {
-      outline: none;
-      border-color: var(--orange);
-      background: rgba(255, 177, 74, 0.12);
-      color: #fff2d7;
-    }
-
-    .flow-node {
-      border: 1px solid rgba(50, 215, 255, 0.4);
-      background: rgba(50, 215, 255, 0.1);
-      border-radius: 0.8rem;
-      padding: 0.7rem 0.9rem;
-      text-align: center;
-      min-width: 110px;
-      font-weight: 700;
-    }
-
-    .flow-line {
-      height: 2px;
-      width: 30px;
-      background: linear-gradient(90deg, var(--cyan), var(--lime));
-      flex: 0 0 auto;
-    }
-
-    input[type="checkbox"] {
-      accent-color: var(--cyan);
-      width: 1rem;
-      height: 1rem;
+      font-size: 0.78rem;
     }
 
     .focus-ring:focus-visible {
@@ -203,598 +125,683 @@
       outline-offset: 3px;
     }
 
+    .choice-button,
+    .device-button,
+    .topology-button {
+      border: 1px solid rgba(117, 193, 255, 0.22);
+      background: rgba(17, 48, 75, 0.55);
+      color: #d9e9f5;
+      border-radius: 0.75rem;
+      padding: 0.78rem 0.85rem;
+      text-align: left;
+      font-weight: 600;
+      transition: 160ms ease;
+    }
+
+    .choice-button:hover,
+    .choice-button:focus-visible,
+    .device-button:hover,
+    .device-button:focus-visible,
+    .device-button.selected,
+    .topology-button:hover,
+    .topology-button:focus-visible,
+    .topology-button.selected {
+      outline: none;
+      border-color: var(--cyan);
+      background: rgba(50, 215, 255, 0.12);
+    }
+
+    .choice-button.correct {
+      color: #dfffc8;
+      border-color: var(--lime);
+      background: rgba(168, 255, 106, 0.14);
+    }
+
+    .choice-button.wrong {
+      color: #ffd0d0;
+      border-color: var(--danger);
+      background: rgba(255, 122, 122, 0.12);
+    }
+
+    .flow-node {
+      min-width: 110px;
+      padding: 0.7rem 0.9rem;
+      border: 1px solid rgba(50, 215, 255, 0.4);
+      border-radius: 0.8rem;
+      background: rgba(50, 215, 255, 0.1);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .flow-line {
+      width: 30px;
+      height: 2px;
+      flex: 0 0 auto;
+      background: linear-gradient(90deg, var(--cyan), var(--lime));
+    }
+
+    .topology-map {
+      min-height: 160px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(117, 193, 255, 0.2);
+      border-radius: 1rem;
+      background:
+        radial-gradient(circle at center, rgba(50, 215, 255, 0.12), transparent 55%),
+        rgba(3, 17, 31, 0.55);
+    }
+
+    .map-center,
+    .map-node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border: 1px solid rgba(50, 215, 255, 0.48);
+      border-radius: 999px;
+      background: rgba(50, 215, 255, 0.15);
+      color: #dff9ff;
+      font-family: "Space Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .map-center { left: calc(50% - 26px); top: calc(50% - 26px); }
+    .map-node.one { top: 18px; left: 18%; }
+    .map-node.two { top: 18px; right: 18%; }
+    .map-node.three { bottom: 18px; left: 18%; }
+    .map-node.four { bottom: 18px; right: 18%; }
+
+    .topology-line {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 1px;
+      height: 95px;
+      transform-origin: top;
+      background: linear-gradient(var(--cyan), var(--lime));
+      opacity: 0.8;
+    }
+
+    .topology-line.a { transform: rotate(-52deg); }
+    .topology-line.b { transform: rotate(52deg); }
+    .topology-line.c { transform: rotate(-128deg); }
+    .topology-line.d { transform: rotate(128deg); }
+
+    input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--cyan);
+    }
+
     @media (max-width: 1023px) {
       .sidebar-stack { position: static !important; }
     }
   </style>
   <script src="/_sdk/e3937a0574eb2d69.data_sdk.js" type="text/javascript" integrity="sha512-xbp/ACqEQy1aDxYMtXTrR3y5MUbzxuggRR/9sD48Gl4VhLMMCiAHsxMaFV6DTdeBpR6ymF+t2zhPKYkWM3+Jfw=="></script>
+  <script src="/_sdk/0e8f359d3c23f6d5.editing_sdk.js" type="text/javascript" integrity="sha512-CBLuYm/olmgyMedTtPRFeqCRZcSWUh6/39ewyXAbnr1dsVHBACzZ59KGJZXvuWNHOHixfWegfuMN9JzmLEDIoA=="></script>
   <script src="/_sdk/9432170dbd2ae0df.resizing_sdk.js" type="text/javascript" integrity="sha512-FeT+58sb1f9ejWPWFjCbJvTT+SDwGV+ngrHUnlO7TWEOoqwOLj6p256kO3vOL7DIWl1cIgrobiof8v2bOigwPg=="></script>
  </head>
  <body data-template-id="__page-root">
   <div class="network-shell">
-   <header data-template-id="course-header" class="canva-header border-b border-sky-200/10 bg-[#061524]/80 px-5 py-5 backdrop-blur-md">
+   <header data-template-id="course-header" class="canva-header border-b border-sky-200/10 px-5 py-5 backdrop-blur-md">
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
      <div class="flex items-center gap-4">
       <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-cyan-300/30 bg-cyan-300/10 text-cyan-300"><i data-lucide="network" aria-hidden="true"></i>
       </div>
       <div>
-       <p data-template-id="course-kicker" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-       <h1 data-template-id="course-title" class="canva-text mt-1 font-bold leading-tight"></h1>
+       <p class="mono text-xs uppercase tracking-[0.2em] text-cyan-200">Networking and Communication 1 • Prelims Lessons 5–8</p>
+       <h1 class="mt-1 text-3xl font-bold leading-tight text-slate-50">Network Foundations: Math, Devices, and Topology</h1>
       </div>
-     </div>
-     <div class="flex flex-wrap items-center gap-2"><span data-template-id="instructor-chip" class="canva-tag stat-chip"></span>
-     </div>
+     </div><span class="stat-chip">INSTRUCTOR • MKDB</span>
     </div>
    </header>
    <main class="mx-auto w-full max-w-7xl px-5 py-6 lg:px-8">
-    <div class="grid gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
+    <div class="grid gap-6 lg:grid-cols-[255px_minmax(0,1fr)]">
      <aside class="sidebar-stack app-panel sticky top-5 h-fit rounded-2xl p-4" aria-label="Lesson navigation">
       <div class="mb-4 flex items-center justify-between border-b border-sky-200/10 pb-4">
-       <p data-template-id="lesson-menu-label" class="canva-text mono text-xs uppercase tracking-[0.16em]"></p><i data-lucide="route" class="h-4 w-4 text-cyan-300" aria-hidden="true"></i>
+       <p class="mono text-xs uppercase tracking-[0.16em] text-cyan-200">Lesson route</p><i data-lucide="route" class="h-4 w-4 text-cyan-300" aria-hidden="true"></i>
       </div>
-      <nav class="space-y-2"><button type="button" class="nav-button active focus-ring" data-view="welcome" aria-current="page"> <i data-lucide="home" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-welcome" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="networks"> <i data-lucide="share-2" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-networks" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="communication"> <i data-lucide="messages-square" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-communication" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="pc-network"> <i data-lucide="monitor-smartphone" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-pc-network" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="hardware"> <i data-lucide="router" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-hardware" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="lab"> <i data-lucide="flask-conical" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-lab" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="activity"> <i data-lucide="users-round" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-activity" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="individual-activity"> <i data-lucide="user-check" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-individual-activity" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="quiz"> <i data-lucide="circle-help" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-quiz" class="canva-text"></span> </button> <button type="button" class="nav-button focus-ring" data-view="references"> <i data-lucide="book-open-check" class="h-4 w-4" aria-hidden="true"></i> <span data-template-id="nav-references" class="canva-text"></span> </button>
+      <nav class="space-y-2"><button type="button" class="nav-button active focus-ring" data-view="welcome" aria-current="page"><i data-lucide="home" class="h-4 w-4" aria-hidden="true"></i>Welcome</button> <button type="button" class="nav-button focus-ring" data-view="network-math"><i data-lucide="calculator" class="h-4 w-4" aria-hidden="true"></i>05 • Network Math</button> <button type="button" class="nav-button focus-ring" data-view="evolution"><i data-lucide="history" class="h-4 w-4" aria-hidden="true"></i>06 • Evolution</button> <button type="button" class="nav-button focus-ring" data-view="devices"><i data-lucide="router" class="h-4 w-4" aria-hidden="true"></i>07 • Connectivity Devices</button> <button type="button" class="nav-button focus-ring" data-view="topology"><i data-lucide="git-fork" class="h-4 w-4" aria-hidden="true"></i>08 • Network Topology</button> <button type="button" class="nav-button focus-ring" data-view="lab"><i data-lucide="flask-conical" class="h-4 w-4" aria-hidden="true"></i>Laboratory Activity 2</button> <button type="button" class="nav-button focus-ring" data-view="group-activity"><i data-lucide="users-round" class="h-4 w-4" aria-hidden="true"></i>Group Activity</button> <button type="button" class="nav-button focus-ring" data-view="individual-activity"><i data-lucide="user-check" class="h-4 w-4" aria-hidden="true"></i>Individual Activity</button> <button type="button" class="nav-button focus-ring" data-view="quiz"><i data-lucide="circle-help" class="h-4 w-4" aria-hidden="true"></i>Knowledge Check</button> <button type="button" class="nav-button focus-ring" data-view="references"><i data-lucide="book-open-check" class="h-4 w-4" aria-hidden="true"></i>References</button>
       </nav>
       <div class="mt-5 border-t border-sky-200/10 pt-4">
-       <div class="mb-2 flex items-center justify-between"><span data-template-id="progress-label" class="canva-text text-sm font-semibold"></span> <span id="progress-count" class="mono text-xs text-cyan-300" aria-live="polite">1 / 9</span>
+       <div class="mb-2 flex items-center justify-between"><span class="text-sm font-semibold text-slate-200">Lesson progress</span> <span id="progress-count" class="mono text-xs text-cyan-300" aria-live="polite">1 / 10</span>
        </div>
        <div class="h-2 overflow-hidden rounded-full bg-slate-800">
-        <div id="progress-bar" class="h-full rounded-full bg-cyan-300 transition-all duration-300" style="width: 11%;"></div>
+        <div id="progress-bar" class="h-full rounded-full bg-cyan-300 transition-all duration-300" style="width: 10%;"></div>
        </div>
       </div>
      </aside>
      <section aria-live="polite">
       <article id="welcome" class="lesson-view active">
-       <section data-template-id="welcome-banner" class="canva-banner app-panel overflow-hidden rounded-3xl p-6 md:p-9">
+       <section class="app-panel overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c2d48] to-[#071a2c] p-6 md:p-9">
         <div class="grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
          <div>
-          <p data-template-id="welcome-eyebrow" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-          <h2 data-template-id="welcome-title" class="canva-text mt-4 font-bold leading-tight"></h2>
-          <p data-template-id="welcome-description" class="canva-text mt-4 max-w-2xl text-base leading-7 text-slate-200"></p>
-          <div class="mt-6 flex flex-wrap gap-2"><span data-template-id="welcome-tag-one" class="canva-tag stat-chip"></span> <span data-template-id="welcome-tag-two" class="canva-tag stat-chip"></span> <span data-template-id="welcome-tag-three" class="canva-tag stat-chip"></span>
+          <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-lime-300">Prelims • Lessons 5–8</p>
+          <h2 class="mt-4 text-3xl font-bold leading-tight text-slate-50">Learn how networks calculate, connect, and communicate.</h2>
+          <p class="mt-4 max-w-2xl leading-7 text-slate-200">These lessons explain network math, the history of computer networking, common connectivity devices, and network topologies using clear examples that connect to classrooms, homes, and computer laboratories.</p>
+          <div class="mt-6 flex flex-wrap gap-2"><span class="stat-chip">NETWORK MATH</span> <span class="stat-chip">DEVICES + TOPOLOGY</span> <span class="stat-chip">LAB + QUIZ</span>
           </div>
          </div>
-         <div data-template-id="outcomes-card" class="canva-card rounded-2xl border border-cyan-300/20 bg-cyan-300/5 p-5">
+         <div class="rounded-2xl border border-cyan-300/20 bg-[#0b2339] p-5">
           <div class="mb-4 flex items-center gap-3"><i data-lucide="target" class="h-6 w-6 text-lime-300" aria-hidden="true"></i>
-           <h3 data-template-id="outcomes-title" class="canva-text font-bold"></h3>
+           <h3 class="text-xl font-bold text-slate-50">Learning Outcomes</h3>
           </div>
           <ol class="space-y-3 text-sm leading-6 text-slate-200">
-           <li class="flex gap-3"><span class="mono text-cyan-300">01</span><span data-template-id="outcome-one" class="canva-text"></span></li>
-           <li class="flex gap-3"><span class="mono text-cyan-300">02</span><span data-template-id="outcome-two" class="canva-text"></span></li>
-           <li class="flex gap-3"><span class="mono text-cyan-300">03</span><span data-template-id="outcome-three" class="canva-text"></span></li>
-           <li class="flex gap-3"><span class="mono text-cyan-300">04</span><span data-template-id="outcome-four" class="canva-text"></span></li>
+           <li class="flex gap-3"><span class="mono text-cyan-300">01</span><span>Understand basic network math computation, including host calculations.</span></li>
+           <li class="flex gap-3"><span class="mono text-cyan-300">02</span><span>Apply different topology designs in a computer network.</span></li>
+           <li class="flex gap-3"><span class="mono text-cyan-300">03</span><span>Understand the roles of different network connectivity devices.</span></li>
           </ol>
          </div>
         </div>
        </section>
        <section class="mt-6 grid gap-6 md:grid-cols-2">
-        <div data-template-id="lesson-route-card" class="canva-card app-panel rounded-2xl p-6">
+        <div class="app-panel rounded-2xl p-6">
          <div class="flex items-center gap-3"><i data-lucide="map" class="h-5 w-5 text-cyan-300" aria-hidden="true"></i>
-          <h2 data-template-id="lesson-route-title" class="canva-text font-bold"></h2>
+          <h2 class="text-xl font-bold text-slate-50">Topics for These Lessons</h2>
          </div>
-         <p data-template-id="lesson-route-copy" class="canva-text mt-4 leading-7 text-slate-200"></p>
-         <div class="mt-5 grid grid-cols-2 gap-3 text-sm"><span data-template-id="route-one" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="route-two" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="route-three" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="route-four" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span>
+         <p class="mt-4 leading-7 text-slate-200">Work through the lesson route in order. Each topic builds the vocabulary and decision-making skills needed to design a simple, reliable network.</p>
+         <div class="mt-5 grid grid-cols-2 gap-3 text-sm"><span class="rounded-lg bg-slate-800 px-3 py-2 text-slate-100">Network Math</span> <span class="rounded-lg bg-slate-800 px-3 py-2 text-slate-100">Evolution of Networking</span> <span class="rounded-lg bg-slate-800 px-3 py-2 text-slate-100">Connectivity Devices</span> <span class="rounded-lg bg-slate-800 px-3 py-2 text-slate-100">Network Topology</span>
          </div>
         </div>
-        <div data-template-id="icebreaker-card" class="canva-card app-panel rounded-2xl p-6">
+        <div class="app-panel rounded-2xl p-6">
          <div class="flex items-start gap-3">
-          <div class="rounded-xl bg-orange-300/15 p-3 text-orange-300"><i data-lucide="zap" class="h-5 w-5" aria-hidden="true"></i>
+          <div class="rounded-xl bg-orange-300/15 p-3 text-orange-300"><i data-lucide="lightbulb" class="h-5 w-5" aria-hidden="true"></i>
           </div>
           <div>
-           <p data-template-id="icebreaker-label" class="canva-text mono text-xs uppercase tracking-[0.18em]"></p>
-           <h2 data-template-id="icebreaker-title" class="canva-text mt-2 font-bold"></h2>
+           <p class="mono text-xs font-bold uppercase tracking-[0.18em] text-orange-200">Quick start</p>
+           <h2 class="mt-2 text-xl font-bold text-slate-50">Think Like a Network Planner</h2>
           </div>
          </div>
-         <p data-template-id="icebreaker-copy" class="canva-text mt-5 leading-7 text-slate-200"></p>
-         <p data-template-id="icebreaker-question" class="canva-text mt-5 rounded-xl border border-cyan-300/20 bg-cyan-300/5 p-4 font-semibold"></p>
+         <p class="mt-5 leading-7 text-slate-200">Before choosing cables, Wi-Fi, or a device, a network planner asks three questions: How many users need to connect? What must they access? How can the network keep working when a problem happens?</p>
+         <p class="mt-5 rounded-xl border border-cyan-300/20 bg-[#103852] p-4 font-semibold text-cyan-100">If 30 computers must connect in one laboratory, what device should become the central connection point?</p>
         </div>
        </section>
       </article>
-      <article id="networks" class="lesson-view">
-       <section data-template-id="networks-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="networks-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="networks-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="network-definition" class="canva-text mt-5 max-w-3xl text-lg leading-8 text-slate-100"></p>
-        <div data-template-id="network-formula" class="canva-panel mono mt-6 inline-flex rounded-xl border border-lime-300/30 px-5 py-4 text-lime-200"></div>
-       </section>
-       <section class="mt-6 grid gap-6 xl:grid-cols-2">
-        <div data-template-id="home-network-card" class="canva-card app-panel rounded-2xl p-6">
-         <div class="flex items-center gap-3"><i data-lucide="house-wifi" class="h-6 w-6 text-cyan-300" aria-hidden="true"></i>
-          <h3 data-template-id="home-network-title" class="canva-text font-bold"></h3>
-         </div>
-         <p data-template-id="home-network-copy" class="canva-text mt-4 leading-7 text-slate-200"></p>
-         <div class="mt-5 grid grid-cols-2 gap-3 text-sm"><span data-template-id="home-device-one" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="home-device-two" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="home-device-three" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="home-device-four" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span>
-         </div>
-         <p data-template-id="home-network-result" class="canva-text mt-5 text-sm leading-6 text-lime-100"></p>
-        </div>
-        <div data-template-id="campus-network-card" class="canva-card app-panel rounded-2xl p-6">
-         <div class="flex items-center gap-3"><i data-lucide="school" class="h-6 w-6 text-orange-300" aria-hidden="true"></i>
-          <h3 data-template-id="campus-network-title" class="canva-text font-bold"></h3>
-         </div>
-         <p data-template-id="campus-network-copy" class="canva-text mt-4 leading-7 text-slate-200"></p>
-         <div class="mt-5 grid grid-cols-2 gap-3 text-sm"><span data-template-id="campus-item-one" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="campus-item-two" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="campus-item-three" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="campus-item-four" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span>
-         </div>
-         <p data-template-id="campus-network-result" class="canva-text mt-5 border-l-2 border-l-orange-300 pl-4 text-sm leading-6 text-orange-100"></p>
+      <article id="network-math" class="lesson-view">
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">Lesson 5</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">Network Math: Understanding Hosts and Addresses</h2>
+        <p class="mt-5 max-w-3xl leading-7 text-slate-100">Network math helps technicians estimate how many devices can join a network. The goal is not to memorize every number immediately. Start by understanding that an IP address has network bits and host bits, and the host bits identify individual devices.</p>
+        <div class="mono mt-6 inline-flex rounded-xl border border-lime-300/30 bg-[#123f48] px-5 py-4 font-bold text-lime-200">
+         USABLE HOSTS = 2^(HOST BITS) − 2
         </div>
        </section>
-       <section data-template-id="why-network-card" class="canva-card app-panel mt-6 rounded-2xl p-6">
-        <h3 data-template-id="why-network-title" class="canva-text font-bold"></h3>
-        <p data-template-id="why-network-copy" class="canva-text mt-2 leading-7 text-slate-300"></p>
-        <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-         <div class="concept-card">
-          <p data-template-id="why-one" class="canva-text font-semibold"></p>
+       <section class="mt-6 grid gap-6 lg:grid-cols-2">
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <div class="flex items-center gap-3"><i data-lucide="binary" class="h-5 w-5 text-cyan-300" aria-hidden="true"></i>
+          <h3 class="text-xl font-bold text-slate-50">Reading an IPv4 Address</h3>
          </div>
-         <div class="concept-card">
-          <p data-template-id="why-two" class="canva-text font-semibold"></p>
+         <p class="mt-4 leading-7 text-slate-200">An IPv4 address has four number groups called octets. For example, 192.168.1.25 has four octets. A subnet mask or prefix, such as /24, tells us which part belongs to the network and which part is available for host devices.</p>
+         <div class="mt-5 grid gap-3 sm:grid-cols-2">
+          <div class="concept-card">
+           <p class="mono font-bold text-cyan-200">192.168.1.25</p>
+           <p class="mt-2 text-sm text-slate-300">Example IPv4 address: identifies one device on a network.</p>
+          </div>
+          <div class="concept-card">
+           <p class="mono font-bold text-cyan-200">/24</p>
+           <p class="mt-2 text-sm text-slate-300">Prefix length: 24 bits are for the network, leaving 8 bits for hosts.</p>
+          </div>
          </div>
-         <div class="concept-card">
-          <p data-template-id="why-three" class="canva-text font-semibold"></p>
+        </div>
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <div class="flex items-center gap-3"><i data-lucide="clipboard-check" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
+          <h3 class="text-xl font-bold text-slate-50">Worked Example: A /24 Network</h3>
          </div>
-         <div class="concept-card">
-          <p data-template-id="why-four" class="canva-text font-semibold"></p>
-         </div>
+         <ol class="mt-5 space-y-4">
+          <li class="flex gap-3"><span class="mono text-cyan-300">01</span><span class="leading-6 text-slate-100">A /24 prefix leaves 32 − 24 = 8 host bits.</span></li>
+          <li class="flex gap-3"><span class="mono text-cyan-300">02</span><span class="leading-6 text-slate-100">Use the formula: 2⁸ − 2 = 256 − 2.</span></li>
+          <li class="flex gap-3"><span class="mono text-cyan-300">03</span><span class="leading-6 text-slate-100">The answer is 254 usable host addresses. The two excluded addresses are the network address and broadcast address.</span></li>
+         </ol>
         </div>
        </section>
-      </article>
-      <article id="communication" class="lesson-view">
-       <section data-template-id="communication-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="communication-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="communication-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="communication-copy" class="canva-text mt-5 max-w-3xl text-lg leading-8 text-slate-100"></p>
-       </section>
-       <section class="mt-6 grid gap-6 md:grid-cols-2">
-        <div data-template-id="traditional-card" class="canva-card app-panel rounded-2xl p-6">
-         <div class="flex items-center gap-3"><i data-lucide="radio" class="h-5 w-5 text-orange-300" aria-hidden="true"></i>
-          <h3 data-template-id="traditional-title" class="canva-text font-bold"></h3>
-         </div>
-         <p data-template-id="traditional-copy" class="canva-text mt-3 text-sm leading-6 text-slate-300"></p>
-         <div class="mt-5 grid grid-cols-2 gap-3"><span data-template-id="traditional-one" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="traditional-two" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="traditional-three" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="traditional-four" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span>
-         </div>
+       <section class="app-panel mt-6 rounded-2xl bg-[#0b2339] p-6">
+        <p class="mono text-xs font-bold uppercase tracking-[0.18em] text-lime-300">Quick check</p>
+        <h3 class="mt-2 text-xl font-bold text-slate-50">How Many Usable Hosts Can a /24 Network Support?</h3>
+        <p class="mt-3 leading-7 text-slate-200">Use 8 host bits and the formula shown above. Select the best answer.</p>
+        <div class="mt-5 grid gap-3 sm:grid-cols-3"><button type="button" class="choice-button focus-ring" data-math-choice="a">128 usable hosts</button> <button type="button" class="choice-button focus-ring" data-math-choice="b">254 usable hosts</button> <button type="button" class="choice-button focus-ring" data-math-choice="c">512 usable hosts</button>
         </div>
-        <div data-template-id="digital-card" class="canva-card app-panel rounded-2xl p-6">
-         <div class="flex items-center gap-3"><i data-lucide="wifi" class="h-5 w-5 text-cyan-300" aria-hidden="true"></i>
-          <h3 data-template-id="digital-title" class="canva-text font-bold"></h3>
-         </div>
-         <p data-template-id="digital-copy" class="canva-text mt-3 text-sm leading-6 text-slate-300"></p>
-         <div class="mt-5 grid grid-cols-2 gap-3"><span data-template-id="digital-one" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="digital-two" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="digital-three" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="digital-four" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span>
-         </div>
-        </div>
-       </section>
-       <section data-template-id="sorting-card" class="canva-card app-panel mt-6 rounded-2xl p-6">
-        <div class="flex flex-col justify-between gap-3 md:flex-row md:items-end">
-         <div>
-          <p data-template-id="sorting-label" class="canva-text mono text-xs uppercase tracking-[0.18em]"></p>
-          <h3 data-template-id="sorting-title" class="canva-text mt-2 font-bold"></h3>
-          <p data-template-id="sorting-copy" class="canva-text mt-2 text-sm text-slate-300"></p>
-         </div>
-         <p id="sorting-feedback" class="text-sm font-semibold text-cyan-200" aria-live="polite"></p>
-        </div>
-        <div class="mt-5 grid gap-4">
-         <div class="sorting-row grid items-center gap-3 rounded-xl border border-sky-200/10 bg-slate-900/40 p-4 md:grid-cols-[1fr_auto_auto]"><span data-template-id="sort-item-one" class="canva-text font-semibold"></span> <button type="button" class="activity-option focus-ring" data-answer="digital" data-item="Online class">Digital</button> <button type="button" class="activity-option focus-ring" data-answer="traditional" data-item="Online class">Traditional</button>
-         </div>
-         <div class="sorting-row grid items-center gap-3 rounded-xl border border-sky-200/10 bg-slate-900/40 p-4 md:grid-cols-[1fr_auto_auto]"><span data-template-id="sort-item-two" class="canva-text font-semibold"></span> <button type="button" class="activity-option focus-ring" data-answer="digital" data-item="Printed memo">Digital</button> <button type="button" class="activity-option focus-ring" data-answer="traditional" data-item="Printed memo">Traditional</button>
-         </div>
-         <div class="sorting-row grid items-center gap-3 rounded-xl border border-sky-200/10 bg-slate-900/40 p-4 md:grid-cols-[1fr_auto_auto]"><span data-template-id="sort-item-three" class="canva-text font-semibold"></span> <button type="button" class="activity-option focus-ring" data-answer="digital" data-item="GCash receipt">Digital</button> <button type="button" class="activity-option focus-ring" data-answer="traditional" data-item="GCash receipt">Traditional</button>
-         </div>
-         <div class="sorting-row grid items-center gap-3 rounded-xl border border-sky-200/10 bg-slate-900/40 p-4 md:grid-cols-[1fr_auto_auto]"><span data-template-id="sort-item-four" class="canva-text font-semibold"></span> <button type="button" class="activity-option focus-ring" data-answer="digital" data-item="Face-to-face consultation">Digital</button> <button type="button" class="activity-option focus-ring" data-answer="traditional" data-item="Face-to-face consultation">Traditional</button>
-         </div>
-        </div>
+        <p id="math-feedback" class="mt-4 text-sm font-semibold text-cyan-200" aria-live="polite"></p>
        </section>
       </article>
-      <article id="pc-network" class="lesson-view">
-       <section data-template-id="pc-network-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="pc-network-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="pc-network-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="pc-network-copy" class="canva-text mt-4 max-w-3xl leading-7 text-slate-200"></p>
+      <article id="evolution" class="lesson-view">
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">Lesson 6</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">Evolution of Computer Networking</h2>
+        <p class="mt-5 max-w-3xl leading-7 text-slate-100">Computer networking developed from research projects that connected a small number of large computers. Today, networking connects billions of personal devices, servers, sensors, classrooms, businesses, and cloud services.</p>
        </section>
-       <section class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <div class="concept-card">
-         <p data-template-id="pc-step-one-label" class="canva-text mono text-xs uppercase tracking-[0.15em] text-cyan-200"></p>
-         <h3 data-template-id="pc-step-one-title" class="canva-text mt-2 font-bold"></h3>
-         <p data-template-id="pc-step-one-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-        </div>
-        <div class="concept-card">
-         <p data-template-id="pc-step-two-label" class="canva-text mono text-xs uppercase tracking-[0.15em] text-cyan-200"></p>
-         <h3 data-template-id="pc-step-two-title" class="canva-text mt-2 font-bold"></h3>
-         <p data-template-id="pc-step-two-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-        </div>
-        <div class="concept-card">
-         <p data-template-id="pc-step-three-label" class="canva-text mono text-xs uppercase tracking-[0.15em] text-cyan-200"></p>
-         <h3 data-template-id="pc-step-three-title" class="canva-text mt-2 font-bold"></h3>
-         <p data-template-id="pc-step-three-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-        </div>
-        <div class="concept-card">
-         <p data-template-id="pc-step-four-label" class="canva-text mono text-xs uppercase tracking-[0.15em] text-cyan-200"></p>
-         <h3 data-template-id="pc-step-four-title" class="canva-text mt-2 font-bold"></h3>
-         <p data-template-id="pc-step-four-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-        </div>
-        <div class="concept-card">
-         <p data-template-id="pc-step-five-label" class="canva-text mono text-xs uppercase tracking-[0.15em] text-cyan-200"></p>
-         <h3 data-template-id="pc-step-five-title" class="canva-text mt-2 font-bold"></h3>
-         <p data-template-id="pc-step-five-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-        </div>
-        <div class="concept-card">
-         <p data-template-id="pc-step-six-label" class="canva-text mono text-xs uppercase tracking-[0.15em] text-cyan-200"></p>
-         <h3 data-template-id="pc-step-six-title" class="canva-text mt-2 font-bold"></h3>
-         <p data-template-id="pc-step-six-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
+       <section class="app-panel mt-6 rounded-2xl bg-[#0b2339] p-6">
+        <h3 class="text-xl font-bold text-slate-50">A Simple Networking Timeline</h3>
+        <p class="mt-2 leading-7 text-slate-300">These milestones show how networks changed from experimental links into the everyday infrastructure we use now.</p>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+         <div class="concept-card">
+          <p class="mono font-bold text-cyan-200">1960s</p>
+          <h4 class="mt-2 font-bold text-slate-50">Early Packet-Switched Networks</h4>
+          <p class="mt-2 text-sm leading-6 text-slate-300">Researchers explored sending information in smaller packets instead of reserving one full communication line.</p>
+         </div>
+         <div class="concept-card">
+          <p class="mono font-bold text-cyan-200">1970s–1980s</p>
+          <h4 class="mt-2 font-bold text-slate-50">TCP/IP and the Internet</h4>
+          <p class="mt-2 text-sm leading-6 text-slate-300">TCP/IP became a common set of rules that allowed different networks to communicate with one another.</p>
+         </div>
+         <div class="concept-card">
+          <p class="mono font-bold text-cyan-200">1990s</p>
+          <h4 class="mt-2 font-bold text-slate-50">The World Wide Web Expands</h4>
+          <p class="mt-2 text-sm leading-6 text-slate-300">Web browsers made information easier to access, helping the internet become useful for schools, homes, and businesses.</p>
+         </div>
+         <div class="concept-card">
+          <p class="mono font-bold text-cyan-200">Today</p>
+          <h4 class="mt-2 font-bold text-slate-50">Mobile, Cloud, and Smart Networks</h4>
+          <p class="mt-2 text-sm leading-6 text-slate-300">Wi-Fi, mobile networks, cloud services, and connected devices allow people to communicate and work from almost anywhere.</p>
+         </div>
         </div>
        </section>
-       <section data-template-id="data-path-card" class="canva-card app-panel mt-6 rounded-2xl p-6">
-        <h3 data-template-id="data-path-title" class="canva-text font-bold"></h3>
-        <p data-template-id="data-path-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-         <div class="flow-node">
-          <span data-template-id="data-path-pc" class="canva-text"></span>
-         </div>
-         <div class="flow-line"></div>
-         <div class="flow-node">
-          <span data-template-id="data-path-switch" class="canva-text"></span>
-         </div>
-         <div class="flow-line"></div>
-         <div class="flow-node">
-          <span data-template-id="data-path-router" class="canva-text"></span>
-         </div>
-         <div class="flow-line"></div>
-         <div class="flow-node">
-          <span data-template-id="data-path-internet" class="canva-text"></span>
-         </div>
+       <section class="app-panel mt-6 rounded-2xl bg-[#0b2339] p-6">
+        <div class="flex items-center gap-3"><i data-lucide="sparkles" class="h-5 w-5 text-orange-300" aria-hidden="true"></i>
+         <h3 class="text-xl font-bold text-slate-50">Why This History Matters</h3>
         </div>
+        <p class="mt-4 leading-7 text-slate-200">Modern networks still use the same big idea: devices need agreed rules, reliable paths, and clear addresses so data can reach the correct destination. The tools became faster and more wireless, but the communication problem is still the same.</p>
        </section>
       </article>
-      <article id="hardware" class="lesson-view">
-       <section data-template-id="hardware-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="hardware-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="hardware-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="hardware-copy" class="canva-text mt-4 max-w-3xl leading-7 text-slate-200"></p>
+      <article id="devices" class="lesson-view">
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">Lesson 7</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">Network Connectivity Devices</h2>
+        <p class="mt-5 max-w-3xl leading-7 text-slate-100">A network works because devices have different jobs. Some connect computers within one room, some provide Wi-Fi, some connect separate networks, and some connect the school network to an internet provider.</p>
        </section>
        <section class="mt-6 grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-        <div data-template-id="hardware-card" class="canva-card app-panel rounded-2xl p-6">
-         <p data-template-id="hardware-instruction" class="canva-text mb-4 text-sm text-slate-300"></p>
-         <div class="grid grid-cols-2 gap-3"><button type="button" class="hardware-button selected focus-ring" data-hardware="computer"><i data-lucide="laptop" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span data-template-id="hardware-computer" class="canva-text block"></span></button> <button type="button" class="hardware-button focus-ring" data-hardware="nic"><i data-lucide="ethernet-port" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span data-template-id="hardware-nic" class="canva-text block"></span></button> <button type="button" class="hardware-button focus-ring" data-hardware="switch"><i data-lucide="git-branch" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span data-template-id="hardware-switch" class="canva-text block"></span></button> <button type="button" class="hardware-button focus-ring" data-hardware="router"><i data-lucide="router" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span data-template-id="hardware-router" class="canva-text block"></span></button> <button type="button" class="hardware-button focus-ring" data-hardware="access-point"><i data-lucide="wifi" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span data-template-id="hardware-access-point" class="canva-text block"></span></button> <button type="button" class="hardware-button focus-ring" data-hardware="ethernet"><i data-lucide="cable" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span data-template-id="hardware-ethernet" class="canva-text block"></span></button> <button type="button" class="hardware-button focus-ring" data-hardware="modem"><i data-lucide="radio-tower" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span data-template-id="hardware-modem" class="canva-text block"></span></button> <button type="button" class="hardware-button focus-ring" data-hardware="server"><i data-lucide="server" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span data-template-id="hardware-server" class="canva-text block"></span></button>
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <p class="mb-4 text-sm text-slate-300">Select a device to inspect its role in a simple network.</p>
+         <div class="grid grid-cols-2 gap-3"><button type="button" class="device-button selected focus-ring" data-device="hub"><i data-lucide="circle-dot-dashed" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Hub</span></button> <button type="button" class="device-button focus-ring" data-device="switch"><i data-lucide="git-branch" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Switch</span></button> <button type="button" class="device-button focus-ring" data-device="router"><i data-lucide="router" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Router</span></button> <button type="button" class="device-button focus-ring" data-device="modem"><i data-lucide="radio-tower" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Modem / ONT</span></button> <button type="button" class="device-button focus-ring" data-device="access-point"><i data-lucide="wifi" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Access Point</span></button> <button type="button" class="device-button focus-ring" data-device="repeater"><i data-lucide="radio" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Repeater</span></button>
          </div>
         </div>
-        <div data-template-id="hardware-explorer-card" class="canva-card app-panel rounded-2xl p-6">
-         <p data-template-id="hardware-explorer-label" class="canva-text mono text-xs uppercase tracking-[0.18em]"></p>
-         <h3 id="hardware-name" class="mt-3 text-2xl font-bold text-cyan-200">Computer</h3>
-         <p id="hardware-description" class="mt-4 max-w-xl text-base leading-7 text-slate-200">A computer is an end device used to create, receive, and use network services.</p>
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <p class="mono text-xs font-bold uppercase tracking-[0.18em] text-lime-300">Device explorer</p>
+         <h3 id="device-name" class="mt-3 text-2xl font-bold text-cyan-200">Hub</h3>
+         <p id="device-description" class="mt-4 max-w-xl text-base leading-7 text-slate-200">A hub connects devices, but it sends incoming data to every connected port. It is simple but less efficient than a switch.</p>
          <div class="mt-7 rounded-xl border border-sky-200/15 bg-slate-950/30 p-4">
-          <p data-template-id="hardware-demo-title" class="canva-text font-semibold"></p>
-          <p data-template-id="hardware-demo-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
+          <p class="font-semibold text-slate-50">Remember the Main Difference</p>
+          <p class="mt-2 text-sm leading-6 text-slate-300">A switch usually connects devices within one local network. A router connects different networks. An access point lets wireless devices join the local network.</p>
          </div>
         </div>
        </section>
-       <section data-template-id="hardware-scenario-card" class="canva-card app-panel mt-6 rounded-2xl p-6">
-        <p data-template-id="hardware-scenario-label" class="canva-text mono text-xs uppercase tracking-[0.18em]"></p>
-        <h3 data-template-id="hardware-scenario-title" class="canva-text mt-2 font-bold"></h3>
-        <p data-template-id="hardware-scenario-copy" class="canva-text mt-3 leading-7 text-slate-200"></p>
-        <div class="mt-6 flex flex-wrap items-center gap-3">
+       <section class="app-panel mt-6 rounded-2xl bg-[#0b2339] p-6">
+        <h3 class="text-xl font-bold text-slate-50">Example: A Small School Network</h3>
+        <p class="mt-2 text-sm leading-6 text-slate-300">This simple path shows how the internet connection can reach classroom computers and wireless devices.</p>
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
          <div class="flow-node">
-          <span data-template-id="hardware-flow-internet" class="canva-text"></span>
+          Internet
          </div>
          <div class="flow-line"></div>
          <div class="flow-node">
-          <span data-template-id="hardware-flow-router" class="canva-text"></span>
+          Modem / ONT
          </div>
          <div class="flow-line"></div>
          <div class="flow-node">
-          <span data-template-id="hardware-flow-switch" class="canva-text"></span>
+          Router
          </div>
          <div class="flow-line"></div>
          <div class="flow-node">
-          <span data-template-id="hardware-flow-users" class="canva-text"></span>
+          Switch
+         </div>
+         <div class="flow-line"></div>
+         <div class="flow-node">
+          PCs + Wi-Fi Users
          </div>
         </div>
+       </section>
+      </article>
+      <article id="topology" class="lesson-view">
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">Lesson 8</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">Network Topology: How Devices Are Arranged</h2>
+        <p class="mt-5 max-w-3xl leading-7 text-slate-100">Network topology describes the arrangement of devices and connections. Choosing the right topology affects cost, performance, troubleshooting, and what happens if one cable or device fails.</p>
+       </section>
+       <section class="mt-6 grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <p class="mb-4 text-sm text-slate-300">Select a topology to compare its purpose, advantage, and limitation.</p>
+         <div class="grid grid-cols-2 gap-3"><button type="button" class="topology-button selected focus-ring" data-topology="star"><i data-lucide="asterisk" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Star</span></button> <button type="button" class="topology-button focus-ring" data-topology="bus"><i data-lucide="minus" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Bus</span></button> <button type="button" class="topology-button focus-ring" data-topology="ring"><i data-lucide="circle" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Ring</span></button> <button type="button" class="topology-button focus-ring" data-topology="mesh"><i data-lucide="share-2" class="mb-2 h-5 w-5 text-cyan-300" aria-hidden="true"></i><span class="block">Mesh</span></button>
+         </div>
+        </div>
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <p class="mono text-xs font-bold uppercase tracking-[0.18em] text-lime-300">Topology explorer</p>
+         <h3 id="topology-name" class="mt-3 text-2xl font-bold text-cyan-200">Star Topology</h3>
+         <p id="topology-description" class="mt-3 leading-7 text-slate-200">In a star topology, every device has its own connection to a central switch or hub. This is one of the most common designs in schools and offices.</p>
+         <div class="topology-map mt-6" aria-label="Star topology illustration">
+          <div class="topology-line a"></div>
+          <div class="topology-line b"></div>
+          <div class="topology-line c"></div>
+          <div class="topology-line d"></div>
+          <div class="map-center">
+           SW
+          </div>
+          <div class="map-node one">
+           PC
+          </div>
+          <div class="map-node two">
+           PC
+          </div>
+          <div class="map-node three">
+           PC
+          </div>
+          <div class="map-node four">
+           AP
+          </div>
+         </div>
+         <div class="mt-5 grid gap-3 sm:grid-cols-2">
+          <div class="rounded-xl border border-lime-300/20 bg-lime-300/5 p-4">
+           <p class="mono text-xs font-bold uppercase tracking-[0.12em] text-lime-200">Strength</p>
+           <p id="topology-strength" class="mt-2 text-sm leading-6 text-lime-100">Easy to expand and troubleshoot because each device has a separate link.</p>
+          </div>
+          <div class="rounded-xl border border-orange-300/20 bg-orange-300/5 p-4">
+           <p class="mono text-xs font-bold uppercase tracking-[0.12em] text-orange-200">Caution</p>
+           <p id="topology-caution" class="mt-2 text-sm leading-6 text-orange-100">If the central switch fails, all connected devices lose their network connection.</p>
+          </div>
+         </div>
+        </div>
+       </section>
+       <section class="app-panel mt-6 rounded-2xl bg-[#0b2339] p-6">
+        <h3 class="text-xl font-bold text-slate-50">Which Topology Fits a Computer Laboratory?</h3>
+        <p class="mt-3 leading-7 text-slate-200">For most modern school laboratories, a star topology is a practical choice. Each computer connects to a central switch. If one computer cable fails, the other computers can usually continue working. The central switch should be protected because it is an important point of connection.</p>
        </section>
       </article>
       <article id="lab" class="lesson-view">
-       <section data-template-id="lab-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="lab-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="lab-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="lab-copy" class="canva-text mt-4 max-w-3xl leading-7 text-slate-200"></p>
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-lime-300">Laboratory Activity 2</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">Network Classifications and Architecture</h2>
+        <p class="mt-4 max-w-3xl leading-7 text-slate-200">In this laboratory activity, you will identify the size or classification of networks and create a labeled network architecture diagram. Follow each step carefully and submit a clear output according to your instructor’s directions.</p>
        </section>
        <section class="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div data-template-id="lab-steps-card" class="canva-card app-panel rounded-2xl p-6">
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
          <div class="flex items-center gap-3"><i data-lucide="list-checks" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
-          <h3 data-template-id="lab-steps-title" class="canva-text font-bold"></h3>
+          <h3 class="text-xl font-bold text-slate-50">Clear Instructions</h3>
          </div>
          <ol class="mt-5 space-y-4">
-          <li class="flex gap-3"><span class="mono text-cyan-300">01</span><span data-template-id="lab-step-one" class="canva-text leading-6 text-slate-100"></span></li>
-          <li class="flex gap-3"><span class="mono text-cyan-300">02</span><span data-template-id="lab-step-two" class="canva-text leading-6 text-slate-100"></span></li>
-          <li class="flex gap-3"><span class="mono text-cyan-300">03</span><span data-template-id="lab-step-three" class="canva-text leading-6 text-slate-100"></span></li>
-          <li class="flex gap-3"><span class="mono text-cyan-300">04</span><span data-template-id="lab-step-four" class="canva-text leading-6 text-slate-100"></span></li>
+          <li class="flex gap-3"><span class="mono text-cyan-300">01</span><span class="leading-6 text-slate-100">Review the classifications: PAN, LAN, MAN, and WAN. Write one real-life example for each classification, such as Bluetooth earbuds for PAN or a campus system for LAN.</span></li>
+          <li class="flex gap-3"><span class="mono text-cyan-300">02</span><span class="leading-6 text-slate-100">Choose one setting to design: a computer laboratory, a small office, a library, or a classroom with Wi-Fi. List the users, devices, and services that need network access.</span></li>
+          <li class="flex gap-3"><span class="mono text-cyan-300">03</span><span class="leading-6 text-slate-100">Draw a network architecture diagram on paper or in a digital tool. Start with the internet, then add the modem or ONT, router, switch, access point, and end devices in the correct order.</span></li>
+          <li class="flex gap-3"><span class="mono text-cyan-300">04</span><span class="leading-6 text-slate-100">Label every major device and choose a topology. For a standard computer laboratory, use a star topology and place the switch at the center of the layout.</span></li>
+          <li class="flex gap-3"><span class="mono text-cyan-300">05</span><span class="leading-6 text-slate-100">Write a short explanation below the diagram. State the network classification, topology, the purpose of each connectivity device, and one reason why your design is appropriate.</span></li>
          </ol>
         </div>
-        <div data-template-id="submission-card" class="canva-card app-panel rounded-2xl p-6">
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
          <div class="rounded-xl border border-orange-300/30 bg-orange-300/10 p-4">
-          <p data-template-id="submission-label" class="canva-text mono text-xs uppercase tracking-[0.16em]"></p>
-          <h3 data-template-id="submission-title" class="canva-text mt-2 font-bold"></h3>
-          <p data-template-id="submission-copy" class="canva-text mt-3 leading-7 text-orange-50"></p>
-         </div><a href="https://www.netacad.com/courses/computer-hardware-basics?courseLang=en-US" target="_blank" rel="noopener noreferrer" data-template-id="netacad-button" class="canva-button focus-ring mt-5 inline-flex items-center gap-2 rounded-lg px-4 py-3 font-bold"> <i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i> <span></span> </a>
-         <p data-template-id="lab-reminder" class="canva-text mt-5 border-l-2 border-l-lime-300 pl-4 text-sm leading-6 text-lime-100"></p>
+          <p class="mono text-xs font-bold uppercase tracking-[0.16em] text-orange-200">Expected output</p>
+          <h3 class="mt-2 text-xl font-bold text-orange-50">One Labeled Architecture Diagram</h3>
+          <p class="mt-3 leading-7 text-orange-50">Your output must include: network classification, chosen topology, at least four connectivity devices or end-device groups, labels for connection paths, and a brief written explanation. Keep your diagram clean enough for another person to follow.</p>
+         </div><a href="https://skillsforall.com/course/introduction-to-data-science?courseLang=en-US" target="_blank" rel="noopener noreferrer" class="focus-ring mt-5 inline-flex items-center gap-2 rounded-lg bg-[#1b6376] px-4 py-3 font-bold text-white"> <i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i> Open Optional Cisco Skills for All Resource </a>
+         <p class="mt-5 border-l-2 border-l-lime-300 pl-4 text-sm leading-6 text-lime-100">Tip: Use arrows or lines to show how data moves. A diagram is easier to understand when the reader can follow the path from internet connection to end device.</p>
         </div>
        </section>
       </article>
-      <article id="activity" class="lesson-view">
-       <section data-template-id="activity-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="activity-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="activity-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="activity-copy" class="canva-text mt-4 max-w-3xl leading-7 text-slate-200"></p>
+      <article id="group-activity" class="lesson-view">
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-lime-300">Collaborative Activity</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">Design a Network for a New Learning Hub</h2>
+        <p class="mt-4 max-w-3xl leading-7 text-slate-200">Work in groups of four or five. Use the information below to create a simple network design and explain why your chosen topology and devices fit the situation.</p>
        </section>
-       <section class="mt-6 grid gap-6 lg:grid-cols-[1fr_0.8fr]">
-        <div data-template-id="activity-scenario-card" class="canva-card app-panel rounded-2xl p-6">
-         <h3 data-template-id="activity-scenario-title" class="canva-text font-bold"></h3>
-         <p data-template-id="activity-scenario-copy" class="canva-text mt-3 leading-7 text-slate-200"></p>
-         <div class="mt-5 grid grid-cols-2 gap-3 text-sm"><span data-template-id="activity-room-one" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="activity-room-two" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="activity-room-three" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="activity-room-four" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="activity-room-five" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span> <span data-template-id="activity-room-six" class="canva-tag rounded-lg bg-slate-800 px-3 py-2"></span>
+       <section class="mt-6 grid gap-6 lg:grid-cols-[1fr_0.85fr]">
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <h3 class="text-xl font-bold text-slate-50">Client Brief</h3>
+         <p class="mt-3 leading-7 text-slate-200">A new learning hub has 25 desktop computers, two printers, teacher laptops, student Wi-Fi, and one internet service connection. The school wants a network that is easy to expand and easy to troubleshoot.</p>
+         <div class="mt-5 grid grid-cols-2 gap-3 text-sm"><span class="rounded-lg bg-slate-800 px-3 py-2 text-slate-100">25 Desktop PCs</span> <span class="rounded-lg bg-slate-800 px-3 py-2 text-slate-100">2 Shared Printers</span> <span class="rounded-lg bg-slate-800 px-3 py-2 text-slate-100">Student Wi-Fi</span> <span class="rounded-lg bg-slate-800 px-3 py-2 text-slate-100">Internet Access</span>
          </div>
         </div>
-        <div data-template-id="checklist-card" class="canva-card app-panel rounded-2xl p-6">
-         <h3 data-template-id="checklist-title" class="canva-text font-bold"></h3>
-         <p data-template-id="checklist-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-         <div class="mt-5 space-y-3"><label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"> <input type="checkbox" class="activity-check"> <span data-template-id="check-item-one" class="canva-text text-sm"></span> </label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"> <input type="checkbox" class="activity-check"> <span data-template-id="check-item-two" class="canva-text text-sm"></span> </label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"> <input type="checkbox" class="activity-check"> <span data-template-id="check-item-three" class="canva-text text-sm"></span> </label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"> <input type="checkbox" class="activity-check"> <span data-template-id="check-item-four" class="canva-text text-sm"></span> </label>
-         </div><button id="reset-checklist" type="button" data-template-id="reset-checklist-button" class="canva-button focus-ring mt-5 rounded-lg px-4 py-2 text-sm font-bold"></button>
-         <p id="checklist-feedback" class="mt-3 text-sm font-semibold text-lime-200" aria-live="polite"></p>
-        </div>
-       </section>
-       <section data-template-id="activity-output-card" class="canva-card app-panel mt-6 rounded-2xl p-6">
-        <h3 data-template-id="activity-output-title" class="canva-text font-bold"></h3>
-        <p data-template-id="activity-output-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-         <div class="flow-node">
-          <span data-template-id="activity-flow-internet" class="canva-text"></span>
-         </div>
-         <div class="flow-line"></div>
-         <div class="flow-node">
-          <span data-template-id="activity-flow-router" class="canva-text"></span>
-         </div>
-         <div class="flow-line"></div>
-         <div class="flow-node">
-          <span data-template-id="activity-flow-switch" class="canva-text"></span>
-         </div>
-         <div class="flow-line"></div>
-         <div class="flow-node">
-          <span data-template-id="activity-flow-access" class="canva-text"></span>
-         </div>
-         <div class="flow-line"></div>
-         <div class="flow-node">
-          <span data-template-id="activity-flow-users" class="canva-text"></span>
-         </div>
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <h3 class="text-xl font-bold text-slate-50">Planning Checklist</h3>
+         <p class="mt-2 text-sm leading-6 text-slate-300">Check each item after your group includes it in the final architecture diagram.</p>
+         <div class="mt-5 space-y-3"><label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"><input type="checkbox" class="group-check"><span class="text-sm">A correct network classification and topology choice</span></label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"><input type="checkbox" class="group-check"><span class="text-sm">Internet, modem or ONT, router, and switch</span></label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"><input type="checkbox" class="group-check"><span class="text-sm">Wireless access point and wired end devices</span></label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"><input type="checkbox" class="group-check"><span class="text-sm">A short explanation of why the design is reliable and expandable</span></label>
+         </div><button id="reset-group-checklist" type="button" class="focus-ring mt-5 rounded-lg bg-[#1b4258] px-4 py-2 text-sm font-bold text-cyan-50">Reset Checklist</button>
+         <p id="group-feedback" class="mt-3 text-sm font-semibold text-lime-200" aria-live="polite"></p>
         </div>
        </section>
       </article>
       <article id="individual-activity" class="lesson-view">
-       <section data-template-id="individual-activity-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="individual-activity-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="individual-activity-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="individual-activity-copy" class="canva-text mt-4 max-w-3xl leading-7 text-slate-200"></p>
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-lime-300">Individual Activity</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">Explain a Network You Use</h2>
+        <p class="mt-4 max-w-3xl leading-7 text-slate-200">Choose a network you know well, such as your home Wi-Fi, a school computer room, a store, or a mobile data network. Use the prompts to explain how it works in your own words.</p>
        </section>
        <section class="mt-6 grid gap-6 lg:grid-cols-[1fr_0.85fr]">
-        <div data-template-id="individual-task-card" class="canva-card app-panel rounded-2xl p-6">
-         <div class="flex items-center gap-3"><i data-lucide="target" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
-          <h3 data-template-id="individual-task-title" class="canva-text font-bold"></h3>
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
+         <div class="flex items-center gap-3"><i data-lucide="pen-line" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
+          <h3 class="text-xl font-bold text-slate-50">Your Written Response</h3>
          </div>
-         <p data-template-id="individual-task-copy" class="canva-text mt-4 leading-7 text-slate-200"></p>
-         <div class="mt-6 space-y-4">
-          <div class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4">
-           <p data-template-id="individual-scenario-label" class="canva-text mono text-xs uppercase tracking-[0.15em] text-cyan-200"></p>
-           <h4 data-template-id="individual-scenario-title" class="canva-text mt-2 font-semibold"></h4>
-           <p data-template-id="individual-scenario-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-          </div>
-          <div class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4">
-           <p data-template-id="individual-questions-label" class="canva-text mono text-xs uppercase tracking-[0.15em] text-cyan-200"></p>
-           <ol class="mt-3 space-y-2 text-sm leading-6 text-slate-200">
-            <li class="flex gap-3"><span class="mono text-cyan-300">•</span><span data-template-id="individual-question-one" class="canva-text"></span></li>
-            <li class="flex gap-3"><span class="mono text-cyan-300">•</span><span data-template-id="individual-question-two" class="canva-text"></span></li>
-            <li class="flex gap-3"><span class="mono text-cyan-300">•</span><span data-template-id="individual-question-three" class="canva-text"></span></li>
-           </ol>
-          </div>
+         <p class="mt-4 leading-7 text-slate-200">Write a short paragraph or create a labeled mini-diagram. Focus on the choices made by the network designer: number of users, devices used, connection type, and topology.</p>
+         <div class="mt-6 rounded-xl border border-sky-200/10 bg-slate-900/30 p-4">
+          <p class="mono text-xs font-bold uppercase tracking-[0.15em] text-cyan-200">Guide questions</p>
+          <ol class="mt-3 space-y-3 text-sm leading-6 text-slate-200">
+           <li class="flex gap-3"><span class="mono text-cyan-300">•</span><span>What type of network is it: PAN, LAN, MAN, or WAN? Explain your answer.</span></li>
+           <li class="flex gap-3"><span class="mono text-cyan-300">•</span><span>Which connectivity devices are likely involved, and what does each one do?</span></li>
+           <li class="flex gap-3"><span class="mono text-cyan-300">•</span><span>Which topology is most likely used, and what could happen if an important connection fails?</span></li>
+          </ol>
          </div>
         </div>
-        <div data-template-id="individual-reflection-card" class="canva-card app-panel rounded-2xl p-6">
+        <div class="app-panel rounded-2xl bg-[#0b2339] p-6">
          <div class="rounded-xl border border-orange-300/30 bg-orange-300/10 p-4">
-          <p data-template-id="individual-reflection-label" class="canva-text mono text-xs uppercase tracking-[0.16em]"></p>
-          <h3 data-template-id="individual-reflection-title" class="canva-text mt-2 font-bold"></h3>
-          <p data-template-id="individual-reflection-copy" class="canva-text mt-3 leading-7 text-orange-50"></p>
+          <p class="mono text-xs font-bold uppercase tracking-[0.16em] text-orange-200">Self-assessment</p>
+          <h3 class="mt-2 text-xl font-bold text-orange-50">My Learning Progress</h3>
+          <p class="mt-3 leading-7 text-orange-50">Check each item after you can explain it clearly without copying the lesson word for word.</p>
          </div>
-         <div class="mt-6 space-y-3">
-          <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"> <input type="checkbox" class="individual-check"> <span data-template-id="individual-check-one" class="canva-text text-sm"></span> </label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"> <input type="checkbox" class="individual-check"> <span data-template-id="individual-check-two" class="canva-text text-sm"></span> </label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"> <input type="checkbox" class="individual-check"> <span data-template-id="individual-check-three" class="canva-text text-sm"></span> </label>
-         </div><button id="reset-individual-checklist" type="button" data-template-id="reset-individual-button" class="canva-button focus-ring mt-5 rounded-lg px-4 py-2 text-sm font-bold"></button>
+         <div class="mt-6 space-y-3"><label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"><input type="checkbox" class="individual-check"><span class="text-sm">I can calculate usable hosts for a simple network prefix.</span></label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"><input type="checkbox" class="individual-check"><span class="text-sm">I can identify common connectivity devices and their functions.</span></label> <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-sky-200/10 bg-slate-900/30 p-3"><input type="checkbox" class="individual-check"><span class="text-sm">I can choose and explain a suitable network topology.</span></label>
+         </div><button id="reset-individual-checklist" type="button" class="focus-ring mt-5 rounded-lg bg-[#1b4258] px-4 py-2 text-sm font-bold text-cyan-50">Reset Reflection</button>
          <p id="individual-feedback" class="mt-3 text-sm font-semibold text-lime-200" aria-live="polite"></p>
-        </div>
-       </section>
-       <section data-template-id="individual-resources-card" class="canva-card app-panel mt-6 rounded-2xl p-6">
-        <h3 data-template-id="individual-resources-title" class="canva-text font-bold"></h3>
-        <p data-template-id="individual-resources-copy" class="canva-text mt-2 text-sm leading-6 text-slate-300"></p>
-        <div class="mt-5 grid gap-3 sm:grid-cols-2"><span data-template-id="individual-resource-one" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="individual-resource-two" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="individual-resource-three" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span> <span data-template-id="individual-resource-four" class="canva-tag rounded-lg bg-slate-800 px-3 py-2 text-sm"></span>
         </div>
        </section>
       </article>
       <article id="quiz" class="lesson-view">
-       <section data-template-id="quiz-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="quiz-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="quiz-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="quiz-copy" class="canva-text mt-4 max-w-3xl leading-7 text-slate-200"></p>
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-lime-300">Knowledge Check</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">Sample Quiz</h2>
+        <p class="mt-4 max-w-3xl leading-7 text-slate-200">Answer each question to review key ideas from Lessons 5–8. Read the feedback before moving on.</p>
        </section>
        <section class="mt-6 grid gap-5">
-        <div data-template-id="quiz-card-one" class="canva-card app-panel rounded-2xl p-6">
-         <p data-template-id="quiz-question-one" class="canva-text font-bold"></p>
-         <div class="mt-4 grid gap-3 sm:grid-cols-2"><button type="button" class="quiz-option focus-ring" data-question="one" data-choice="a"><span data-template-id="quiz-one-a" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="one" data-choice="b"><span data-template-id="quiz-one-b" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="one" data-choice="c"><span data-template-id="quiz-one-c" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="one" data-choice="d"><span data-template-id="quiz-one-d" class="canva-text"></span></button>
+        <div class="app-panel quiz-card rounded-2xl bg-[#0b2339] p-6">
+         <p class="font-bold text-slate-50">1. How many usable host addresses are available in a /24 network?</p>
+         <div class="mt-4 grid gap-3 sm:grid-cols-2"><button type="button" class="choice-button focus-ring quiz-choice" data-question="one" data-choice="a">24</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="one" data-choice="b">128</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="one" data-choice="c">254</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="one" data-choice="d">512</button>
          </div>
          <p id="quiz-feedback-one" class="mt-4 text-sm font-semibold text-cyan-200" aria-live="polite"></p>
         </div>
-        <div data-template-id="quiz-card-two" class="canva-card app-panel rounded-2xl p-6">
-         <p data-template-id="quiz-question-two" class="canva-text font-bold"></p>
-         <div class="mt-4 grid gap-3 sm:grid-cols-2"><button type="button" class="quiz-option focus-ring" data-question="two" data-choice="a"><span data-template-id="quiz-two-a" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="two" data-choice="b"><span data-template-id="quiz-two-b" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="two" data-choice="c"><span data-template-id="quiz-two-c" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="two" data-choice="d"><span data-template-id="quiz-two-d" class="canva-text"></span></button>
+        <div class="app-panel quiz-card rounded-2xl bg-[#0b2339] p-6">
+         <p class="font-bold text-slate-50">2. Which device commonly connects many computers inside one local area network?</p>
+         <div class="mt-4 grid gap-3 sm:grid-cols-2"><button type="button" class="choice-button focus-ring quiz-choice" data-question="two" data-choice="a">Modem</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="two" data-choice="b">Switch</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="two" data-choice="c">Repeater</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="two" data-choice="d">Monitor</button>
          </div>
          <p id="quiz-feedback-two" class="mt-4 text-sm font-semibold text-cyan-200" aria-live="polite"></p>
         </div>
-        <div data-template-id="quiz-card-three" class="canva-card app-panel rounded-2xl p-6">
-         <p data-template-id="quiz-question-three" class="canva-text font-bold"></p>
-         <div class="mt-4 grid gap-3 sm:grid-cols-2"><button type="button" class="quiz-option focus-ring" data-question="three" data-choice="a"><span data-template-id="quiz-three-a" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="three" data-choice="b"><span data-template-id="quiz-three-b" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="three" data-choice="c"><span data-template-id="quiz-three-c" class="canva-text"></span></button> <button type="button" class="quiz-option focus-ring" data-question="three" data-choice="d"><span data-template-id="quiz-three-d" class="canva-text"></span></button>
+        <div class="app-panel quiz-card rounded-2xl bg-[#0b2339] p-6">
+         <p class="font-bold text-slate-50">3. Which topology connects devices to one central switch or hub?</p>
+         <div class="mt-4 grid gap-3 sm:grid-cols-2"><button type="button" class="choice-button focus-ring quiz-choice" data-question="three" data-choice="a">Star topology</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="three" data-choice="b">Bus topology</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="three" data-choice="c">Ring topology</button> <button type="button" class="choice-button focus-ring quiz-choice" data-question="three" data-choice="d">Mesh topology</button>
          </div>
          <p id="quiz-feedback-three" class="mt-4 text-sm font-semibold text-cyan-200" aria-live="polite"></p>
         </div>
        </section>
       </article>
       <article id="references" class="lesson-view">
-       <section data-template-id="references-banner" class="canva-banner app-panel rounded-3xl p-6 md:p-9">
-        <p data-template-id="references-label" class="canva-text mono text-xs uppercase tracking-[0.2em]"></p>
-        <h2 data-template-id="references-title" class="canva-text mt-3 font-bold"></h2>
-        <p data-template-id="references-copy" class="canva-text mt-4 max-w-3xl leading-7 text-slate-200"></p>
+       <section class="app-panel rounded-3xl bg-gradient-to-br from-[#103852] to-[#071a2c] p-6 md:p-9">
+        <p class="mono text-xs font-bold uppercase tracking-[0.2em] text-lime-300">Further Learning</p>
+        <h2 class="mt-3 text-3xl font-bold text-slate-50">References and Learning Resources</h2>
+        <p class="mt-4 max-w-3xl leading-7 text-slate-200">Use these trusted learning resources to review network concepts, topology, and the history of the internet.</p>
        </section>
-       <section data-template-id="references-card" class="canva-card app-panel mt-6 rounded-2xl p-6">
-        <h3 data-template-id="references-list-title" class="canva-text font-bold"></h3>
+       <section class="app-panel mt-6 rounded-2xl bg-[#0b2339] p-6">
+        <h3 class="text-xl font-bold text-slate-50">Recommended Sources</h3>
         <ul class="mt-5 space-y-4">
-         <li class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4"><a href="https://www.netacad.com/courses/computer-hardware-basics?courseLang=en-US" target="_blank" rel="noopener noreferrer" data-template-id="reference-one" class="canva-link focus-ring inline-flex items-center gap-2 font-semibold"> <i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i><span></span> </a></li>
-         <li class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4"><a href="https://www.cisco.com/c/en/us/solutions/small-business/resource-center/networking/networking-basics.html" target="_blank" rel="noopener noreferrer" data-template-id="reference-two" class="canva-link focus-ring inline-flex items-center gap-2 font-semibold"> <i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i><span></span> </a></li>
-         <li class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4"><a href="https://www.cloudflare.com/learning/network-layer/what-is-a-computer-network/" target="_blank" rel="noopener noreferrer" data-template-id="reference-three" class="canva-link focus-ring inline-flex items-center gap-2 font-semibold"> <i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i><span></span> </a></li>
-         <li class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4"><a href="https://www.itu.int/en/ITU-T/Pages/default.aspx" target="_blank" rel="noopener noreferrer" data-template-id="reference-four" class="canva-link focus-ring inline-flex items-center gap-2 font-semibold"> <i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i><span></span> </a></li>
+         <li class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4"><a href="https://www.cisco.com/c/en/us/solutions/small-business/resource-center/networking/networking-basics.html" target="_blank" rel="noopener noreferrer" class="focus-ring inline-flex items-center gap-2 font-semibold text-cyan-200"><i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i>Cisco — Networking Basics Resource Center</a></li>
+         <li class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4"><a href="https://www.cloudflare.com/learning/network-layer/what-is-a-computer-network/" target="_blank" rel="noopener noreferrer" class="focus-ring inline-flex items-center gap-2 font-semibold text-cyan-200"><i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i>Cloudflare Learning Center — What Is a Computer Network?</a></li>
+         <li class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4"><a href="https://www.ibm.com/think/topics/network-topology" target="_blank" rel="noopener noreferrer" class="focus-ring inline-flex items-center gap-2 font-semibold text-cyan-200"><i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i>IBM Think — Network Topology</a></li>
+         <li class="rounded-xl border border-sky-200/10 bg-slate-900/30 p-4"><a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/" target="_blank" rel="noopener noreferrer" class="focus-ring inline-flex items-center gap-2 font-semibold text-cyan-200"><i data-lucide="external-link" class="h-4 w-4" aria-hidden="true"></i>Internet Society — A Brief History of the Internet</a></li>
         </ul>
        </section>
       </article>
      </section>
     </div>
    </main>
-   <footer data-template-id="course-footer" class="canva-footer mx-auto w-full max-w-7xl px-5 pb-8 pt-2 text-center text-sm text-slate-400 lg:px-8"></footer>
+   <footer class="mx-auto w-full max-w-7xl px-5 pb-8 pt-2 text-center text-sm text-slate-400 lg:px-8">
+    Networking and Communication 1 • Prelims Lessons 5–8 • Laboratory Activity 2
+   </footer>
   </div>
-  <script src="/_sdk/0e8f359d3c23f6d5.editing_sdk.js" integrity="sha512-CBLuYm/olmgyMedTtPRFeqCRZcSWUh6/39ewyXAbnr1dsVHBACzZ59KGJZXvuWNHOHixfWegfuMN9JzmLEDIoA=="></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       lucide.createIcons();
 
-      const views = [...document.querySelectorAll(".lesson-view")];
       const navButtons = [...document.querySelectorAll(".nav-button")];
-      const progress = document.getElementById("progress-bar");
+      const views = [...document.querySelectorAll(".lesson-view")];
+      const progressBar = document.getElementById("progress-bar");
       const progressCount = document.getElementById("progress-count");
 
       navButtons.forEach((button, index) => {
         button.addEventListener("click", () => {
-          const selected = button.dataset.view;
+          const selectedView = button.dataset.view;
 
           navButtons.forEach((item) => {
             item.classList.remove("active");
             item.removeAttribute("aria-current");
           });
 
-          button.classList.add("active");
-          button.setAttribute("aria-current", "page");
-
           views.forEach((view) => {
-            view.classList.toggle("active", view.id === selected);
+            view.classList.toggle("active", view.id === selectedView);
           });
 
-          progress.style.width = `${((index + 1) / navButtons.length) * 100}%`;
+          button.classList.add("active");
+          button.setAttribute("aria-current", "page");
+          progressBar.style.width = `${((index + 1) / navButtons.length) * 100}%`;
           progressCount.textContent = `${index + 1} / ${navButtons.length}`;
         });
       });
 
-      const correctAnswers = {
-        "Online class": "digital",
-        "Printed memo": "traditional",
-        "GCash receipt": "digital",
-        "Face-to-face consultation": "traditional"
-      };
-
-      document.querySelectorAll(".activity-option").forEach((button) => {
+      document.querySelectorAll("[data-math-choice]").forEach((button) => {
         button.addEventListener("click", () => {
-          const row = button.closest(".sorting-row");
-          const item = button.dataset.item;
-          const selectedAnswer = button.dataset.answer;
-          const isCorrect = correctAnswers[item] === selectedAnswer;
+          const correct = button.dataset.mathChoice === "b";
 
-          row.querySelectorAll(".activity-option").forEach((option) => {
-            option.classList.remove("correct", "wrong");
-            option.disabled = true;
+          document.querySelectorAll("[data-math-choice]").forEach((item) => {
+            item.disabled = true;
+            item.classList.remove("correct", "wrong");
           });
 
-          button.classList.add(isCorrect ? "correct" : "wrong");
+          button.classList.add(correct ? "correct" : "wrong");
 
-          if (!isCorrect) {
-            row.querySelector(`[data-answer="${correctAnswers[item]}"]`).classList.add("correct");
+          if (!correct) {
+            document.querySelector('[data-math-choice="b"]').classList.add("correct");
           }
 
-          document.getElementById("sorting-feedback").textContent = isCorrect
-            ? "Correct classification."
-            : `Review: ${item} is a ${correctAnswers[item]} form of communication.`;
+          document.getElementById("math-feedback").textContent = correct
+            ? "Correct. A /24 network leaves 8 host bits, so 2⁸ − 2 gives 254 usable host addresses."
+            : "Not quite. A /24 network has 8 host bits. Use 2⁸ − 2 to find the usable hosts: 254.";
         });
       });
 
-      const hardwareInfo = {
-        computer: ["Computer", "An end device used by students and staff to access learning platforms, files, printers, cloud apps, and the internet."],
-        nic: ["Network Interface Card", "The NIC lets a desktop or laptop send and receive data through Ethernet or Wi-Fi."],
-        switch: ["Switch", "A switch connects many devices within the same local network, such as the computers in a laboratory."],
-        router: ["Router", "A router connects separate networks and directs data between the campus network and the internet."],
-        "access-point": ["Access Point", "An access point provides Wi-Fi coverage so mobile devices can join the local network."],
-        ethernet: ["Ethernet Cable", "Ethernet cable creates stable wired connections between devices, switches, routers, and wall ports."],
-        modem: ["Modem or ONT", "This device links the local network to the internet service provider’s connection, such as fiber internet."],
-        server: ["Server", "A server provides shared services such as user accounts, file storage, websites, databases, or learning systems."]
+      const deviceInfo = {
+        hub: ["Hub", "A hub connects devices, but it sends incoming data to every connected port. It is simple but less efficient than a switch."],
+        switch: ["Switch", "A switch connects devices in one local network and forwards data to the correct port when possible. It is common in computer laboratories and offices."],
+        router: ["Router", "A router connects different networks. It directs traffic between a local network and other networks, such as the internet."],
+        modem: ["Modem or ONT", "A modem or optical network terminal connects the local network to the internet service provider's line, such as fiber or cable internet."],
+        "access-point": ["Wireless Access Point", "An access point provides Wi-Fi so phones, laptops, and tablets can join the local network without Ethernet cables."],
+        repeater: ["Repeater", "A repeater receives a weak signal and sends it again to extend network coverage over a longer distance."]
       };
 
-      document.querySelectorAll(".hardware-button").forEach((button) => {
+      document.querySelectorAll(".device-button").forEach((button) => {
         button.addEventListener("click", () => {
-          document.querySelectorAll(".hardware-button").forEach((item) => item.classList.remove("selected"));
+          document.querySelectorAll(".device-button").forEach((item) => item.classList.remove("selected"));
           button.classList.add("selected");
 
-          const detail = hardwareInfo[button.dataset.hardware];
-          document.getElementById("hardware-name").textContent = detail[0];
-          document.getElementById("hardware-description").textContent = detail[1];
+          const detail = deviceInfo[button.dataset.device];
+          document.getElementById("device-name").textContent = detail[0];
+          document.getElementById("device-description").textContent = detail[1];
         });
       });
 
-      const checks = [...document.querySelectorAll(".activity-check")];
-      const checklistFeedback = document.getElementById("checklist-feedback");
-
-      checks.forEach((check) => {
-        check.addEventListener("change", () => {
-          const completed = checks.filter((item) => item.checked).length;
-          checklistFeedback.textContent = completed === checks.length
-            ? "Excellent. Your group is ready to draw and explain its network plan."
-            : `${completed} of ${checks.length} planning requirements completed.`;
-        });
-      });
-
-      document.getElementById("reset-checklist").addEventListener("click", () => {
-        checks.forEach((check) => { check.checked = false; });
-        checklistFeedback.textContent = "";
-      });
-
-      const individualChecks = [...document.querySelectorAll(".individual-check")];
-      const individualFeedback = document.getElementById("individual-feedback");
-
-      individualChecks.forEach((check) => {
-        check.addEventListener("change", () => {
-          const completed = individualChecks.filter((item) => item.checked).length;
-          individualFeedback.textContent = completed === individualChecks.length
-            ? "Excellent. You have reflected on all key networking concepts."
-            : `${completed} of ${individualChecks.length} reflection items completed.`;
-        });
-      });
-
-      document.getElementById("reset-individual-checklist").addEventListener("click", () => {
-        individualChecks.forEach((check) => { check.checked = false; });
-        individualFeedback.textContent = "";
-      });
-
-      const quizAnswers = {
-        one: "b",
-        two: "c",
-        three: "a"
+      const topologyInfo = {
+        star: [
+          "Star Topology",
+          "In a star topology, every device has its own connection to a central switch or hub. This is one of the most common designs in schools and offices.",
+          "Easy to expand and troubleshoot because each device has a separate link.",
+          "If the central switch fails, all connected devices lose their network connection."
+        ],
+        bus: [
+          "Bus Topology",
+          "In a bus topology, devices share one main communication cable called a backbone. Data travels along that cable for all devices to receive.",
+          "Uses less cable and is simple for a very small temporary network.",
+          "A damaged backbone can stop communication for the entire network."
+        ],
+        ring: [
+          "Ring Topology",
+          "In a ring topology, each device connects to two neighboring devices, forming a closed loop. Data moves around the ring from one device to another.",
+          "Data follows an organized path around the network.",
+          "A single connection problem can affect the ring unless backup links are used."
+        ],
+        mesh: [
+          "Mesh Topology",
+          "In a mesh topology, devices have multiple connections to other devices. This gives data more than one possible route.",
+          "Very reliable because data can use another path if one connection fails.",
+          "Needs more cables, ports, and planning, so it can be expensive."
+        ]
       };
 
-      const quizFeedback = {
-        one: "Correct. A network is made of connected devices that share data, resources, or services.",
-        two: "Correct. The switch connects devices inside the same local network.",
-        three: "Correct. A network interface card enables a computer to communicate through a network."
+      document.querySelectorAll(".topology-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".topology-button").forEach((item) => item.classList.remove("selected"));
+          button.classList.add("selected");
+
+          const detail = topologyInfo[button.dataset.topology];
+          document.getElementById("topology-name").textContent = detail[0];
+          document.getElementById("topology-description").textContent = detail[1];
+          document.getElementById("topology-strength").textContent = detail[2];
+          document.getElementById("topology-caution").textContent = detail[3];
+        });
+      });
+
+      function setupChecklist(selector, feedbackId, resetId, completeMessage, ongoingMessage) {
+        const checks = [...document.querySelectorAll(selector)];
+        const feedback = document.getElementById(feedbackId);
+        const resetButton = document.getElementById(resetId);
+
+        checks.forEach((check) => {
+          check.addEventListener("change", () => {
+            const count = checks.filter((item) => item.checked).length;
+            feedback.textContent = count === checks.length ? completeMessage : ongoingMessage(count, checks.length);
+          });
+        });
+
+        resetButton.addEventListener("click", () => {
+          checks.forEach((check) => {
+            check.checked = false;
+          });
+          feedback.textContent = "";
+        });
+      }
+
+      setupChecklist(
+        ".group-check",
+        "group-feedback",
+        "reset-group-checklist",
+        "Excellent. Your team has a complete plan ready to present.",
+        (count, total) => `${count} of ${total} design requirements completed.`
+      );
+
+      setupChecklist(
+        ".individual-check",
+        "individual-feedback",
+        "reset-individual-checklist",
+        "Excellent. Your individual reflection is ready for review.",
+        (count, total) => `${count} of ${total} reflection tasks completed.`
+      );
+
+      const quizAnswers = { one: "c", two: "b", three: "a" };
+      const feedbackMessages = {
+        one: "Correct. A /24 network has 8 host bits, so it supports 254 usable host addresses.",
+        two: "Correct. A switch efficiently connects multiple devices inside the same local area network.",
+        three: "Correct. A star topology uses a central device such as a switch or hub."
       };
 
-      document.querySelectorAll(".quiz-option").forEach((button) => {
+      document.querySelectorAll(".quiz-choice").forEach((button) => {
         button.addEventListener("click", () => {
           const question = button.dataset.question;
-          const choice = button.dataset.choice;
-          const card = button.closest(".canva-card");
-          const isCorrect = quizAnswers[question] === choice;
+          const isCorrect = quizAnswers[question] === button.dataset.choice;
+          const card = button.closest(".quiz-card");
 
-          card.querySelectorAll(".quiz-option").forEach((option) => {
-            option.disabled = true;
-            option.classList.remove("correct", "wrong");
+          card.querySelectorAll(".quiz-choice").forEach((item) => {
+            item.disabled = true;
+            item.classList.remove("correct", "wrong");
           });
 
           button.classList.add(isCorrect ? "correct" : "wrong");
@@ -804,8 +811,8 @@
           }
 
           document.getElementById(`quiz-feedback-${question}`).textContent = isCorrect
-            ? quizFeedback[question]
-            : `Not quite. ${quizFeedback[question]}`;
+            ? feedbackMessages[question]
+            : `Not quite. ${feedbackMessages[question]}`;
         });
       });
     });
