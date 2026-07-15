@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+ <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260715-05-d05fd84"}');</script><script src="/_sdk/f432b76fb310b513.telemetry_sdk.js" integrity="sha512-9FJQ55EKmmqhyyik8BhrMVfm0+iYYfb8uOlRsjtkxJMEI97qOVEI4PnHohDjQAtvAep0IOEpdQ64eki0sz62ug=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Networking and Communication 1 — Course Index</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #eaf5ff;
+      --muted: #9eb4c8;
+      --edge: rgba(117, 193, 255, 0.18);
+      --cyan: #32d7ff;
+      --lime: #a8ff6a;
+      --orange: #ffb14a;
+      --night: #061524;
+      --panel: rgba(7, 26, 44, 0.88);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      color: var(--ink);
+      background: var(--night);
+      font-family: "DM Sans", sans-serif;
+      overflow-x: hidden;
+    }
+
+    .course-shell {
+      width: 100%;
+      min-height: 100%;
+      position: relative;
+      background:
+        radial-gradient(circle at 84% 4%, rgba(50, 215, 255, 0.16), transparent 28%),
+        radial-gradient(circle at 8% 84%, rgba(168, 255, 106, 0.08), transparent 31%),
+        #061524;
+    }
+
+    .course-shell::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      background-image:
+        linear-gradient(rgba(117, 193, 255, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(117, 193, 255, 0.09) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+    }
+
+    .mono {
+      font-family: "Space Mono", monospace;
+    }
+
+    .app-panel {
+      border: 1px solid var(--edge);
+      background: var(--panel);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(12px);
+    }
+
+    .section-marker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(50, 215, 255, 0.3);
+      border-radius: 999px;
+      background: rgba(50, 215, 255, 0.09);
+      color: #c4f5ff;
+      padding: 0.42rem 0.78rem;
+      font-family: "Space Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .course-chip {
+      border: 1px solid rgba(168, 255, 106, 0.28);
+      border-radius: 999px;
+      background: rgba(168, 255, 106, 0.08);
+      color: #ddffc9;
+      padding: 0.45rem 0.75rem;
+      font-family: "Space Mono", monospace;
+      font-size: 0.76rem;
+    }
+
+    .lesson-card {
+      position: relative;
+      display: flex;
+      min-height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      border: 1px solid rgba(117, 193, 255, 0.18);
+      border-radius: 1rem;
+      background: rgba(14, 42, 67, 0.72);
+      padding: 1.2rem;
+      color: var(--ink);
+      text-decoration: none;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .lesson-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -35%;
+      width: 35%;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(50, 215, 255, 0.16), transparent);
+      transition: transform 420ms ease;
+    }
+
+    .lesson-card:hover,
+    .lesson-card:focus-visible {
+      transform: translateY(-4px);
+      border-color: rgba(50, 215, 255, 0.62);
+      background: rgba(18, 57, 88, 0.9);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.28), 0 0 24px rgba(50, 215, 255, 0.12);
+      outline: none;
+    }
+
+    .lesson-card:hover::after,
+    .lesson-card:focus-visible::after {
+      transform: translateX(410%);
+    }
+
+    .period-prelim {
+      color: #d5f8ff;
+      border-color: rgba(50, 215, 255, 0.3);
+      background: rgba(50, 215, 255, 0.1);
+    }
+
+    .period-midterm {
+      color: #e1ffc8;
+      border-color: rgba(168, 255, 106, 0.31);
+      background: rgba(168, 255, 106, 0.1);
+    }
+
+    .period-final {
+      color: #ffe4be;
+      border-color: rgba(255, 177, 74, 0.34);
+      background: rgba(255, 177, 74, 0.11);
+    }
+
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(50, 215, 255, 0.65);
+      outline-offset: 4px;
+    }
+
+    .section-line {
+      height: 1px;
+      flex: 1 1 auto;
+      background: linear-gradient(90deg, rgba(50, 215, 255, 0.35), transparent);
+    }
+
+    @media (max-width: 640px) {
+      .lesson-card {
+        min-height: auto;
+      }
+    }
+  </style>
+  <script src="/_sdk/e3937a0574eb2d69.data_sdk.js" type="text/javascript" integrity="sha512-xbp/ACqEQy1aDxYMtXTrR3y5MUbzxuggRR/9sD48Gl4VhLMMCiAHsxMaFV6DTdeBpR6ymF+t2zhPKYkWM3+Jfw=="></script>
+  <script src="/_sdk/9432170dbd2ae0df.resizing_sdk.js" type="text/javascript" integrity="sha512-FeT+58sb1f9ejWPWFjCbJvTT+SDwGV+ngrHUnlO7TWEOoqwOLj6p256kO3vOL7DIWl1cIgrobiof8v2bOigwPg=="></script>
+ </head>
+ <body data-template-id="__page-root">
+  <div class="course-shell">
+   <header data-template-id="header-section" class="canva-header border-b border-sky-200/10 px-5 py-6 backdrop-blur-md">
+    <div class="mx-auto flex w-full max-w-7xl flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+     <div class="flex items-start gap-4">
+      <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-cyan-300/30 bg-cyan-300/10 text-cyan-300"><i data-lucide="network" aria-hidden="true"></i>
+      </div>
+      <div>
+       <p data-template-id="course-code" class="canva-text mono text-xs uppercase tracking-[0.2em] text-cyan-200"></p>
+       <h1 data-template-id="course-title" class="canva-text mt-2 font-bold leading-tight text-slate-50"></h1>
+      </div>
+     </div>
+     <div class="flex flex-wrap gap-2"><span data-template-id="instructor-chip" class="canva-tag course-chip"></span> <span data-template-id="credit-chip" class="canva-tag course-chip"></span>
+     </div>
+    </div>
+   </header>
+   <main class="mx-auto w-full max-w-7xl px-5 py-7 lg:px-8">
+    <section data-template-id="course-overview" class="canva-section app-panel overflow-hidden rounded-3xl p-6 md:p-9">
+     <div class="grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
+      <div><span data-template-id="overview-marker" class="canva-tag section-marker"> <i data-lucide="book-open" class="h-4 w-4" aria-hidden="true"></i> </span>
+       <h2 data-template-id="overview-title" class="canva-text mt-5 font-bold leading-tight text-slate-50"></h2>
+       <p data-template-id="course-description" class="canva-text mt-5 max-w-4xl leading-7 text-slate-200"></p>
+      </div>
+      <aside data-template-id="course-details-card" class="canva-card rounded-2xl border border-cyan-300/20 bg-[#0b2339] p-5" aria-label="Course details">
+       <div class="flex items-center gap-3"><i data-lucide="clipboard-list" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
+        <h2 data-template-id="course-details-title" class="canva-text font-bold text-slate-50"></h2>
+       </div>
+       <dl class="mt-5 space-y-4">
+        <div class="border-b border-sky-100/10 pb-4">
+         <dt data-template-id="prerequisite-label" class="canva-text mono text-xs uppercase tracking-[0.14em] text-cyan-200"></dt>
+         <dd data-template-id="prerequisite-value" class="canva-text mt-1 text-sm text-slate-100"></dd>
+        </div>
+        <div class="border-b border-sky-100/10 pb-4">
+         <dt data-template-id="units-label" class="canva-text mono text-xs uppercase tracking-[0.14em] text-cyan-200"></dt>
+         <dd data-template-id="units-value" class="canva-text mt-1 text-sm leading-6 text-slate-100"></dd>
+        </div>
+        <div>
+         <dt data-template-id="instructor-label" class="canva-text mono text-xs uppercase tracking-[0.14em] text-cyan-200"></dt>
+         <dd data-template-id="instructor-value" class="canva-text mt-1 text-sm font-semibold text-lime-200"></dd>
+        </div>
+       </dl>
+      </aside>
+     </div>
+    </section>
+    <section class="mt-10" aria-labelledby="prelims-heading">
+     <div class="mb-5 flex items-center gap-4">
+      <div>
+       <p data-template-id="prelims-marker" class="canva-text mono text-xs font-bold uppercase tracking-[0.2em] text-cyan-200"></p>
+       <h2 id="prelims-heading" data-template-id="prelims-title" class="canva-text mt-2 font-bold text-slate-50"></h2>
+      </div>
+      <div class="section-line"></div><i data-lucide="radio-tower" class="h-6 w-6 text-cyan-300" aria-hidden="true"></i>
+     </div>
+     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><a href="p1.html" target="_blank" rel="noopener noreferrer" data-template-id="prelim-lessons-1-4" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-prelim rounded-full border px-3 py-1 text-xs font-bold">PRELIMS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-cyan-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="prelim-lessons-1-4-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-cyan-200"></p>
+        <h3 data-template-id="prelim-lessons-1-4-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+        <p data-template-id="prelim-lessons-1-4-helper" class="canva-text mt-3 text-sm leading-6 text-slate-300"></p>
+       </div></a> <a href="p2.html" target="_blank" rel="noopener noreferrer" data-template-id="prelim-lessons-5-8" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-prelim rounded-full border px-3 py-1 text-xs font-bold">PRELIMS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-cyan-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="prelim-lessons-5-8-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-cyan-200"></p>
+        <h3 data-template-id="prelim-lessons-5-8-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+        <p data-template-id="prelim-lessons-5-8-helper" class="canva-text mt-3 text-sm leading-6 text-slate-300"></p>
+       </div></a>
+     </div>
+    </section>
+    <section class="mt-10" aria-labelledby="midterms-heading">
+     <div class="mb-5 flex items-center gap-4">
+      <div>
+       <p data-template-id="midterms-marker" class="canva-text mono text-xs font-bold uppercase tracking-[0.2em] text-lime-300"></p>
+       <h2 id="midterms-heading" data-template-id="midterms-title" class="canva-text mt-2 font-bold text-slate-50"></h2>
+      </div>
+      <div class="section-line"></div><i data-lucide="route" class="h-6 w-6 text-lime-300" aria-hidden="true"></i>
+     </div>
+     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"><a href="m1.html" target="_blank" rel="noopener noreferrer" data-template-id="midterm-lesson-1" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-midterm rounded-full border px-3 py-1 text-xs font-bold">MIDTERMS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="midterm-lesson-1-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-lime-300"></p>
+        <h3 data-template-id="midterm-lesson-1-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a> <a href="m2.html" target="_blank" rel="noopener noreferrer" data-template-id="midterm-lesson-2" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-midterm rounded-full border px-3 py-1 text-xs font-bold">MIDTERMS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="midterm-lesson-2-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-lime-300"></p>
+        <h3 data-template-id="midterm-lesson-2-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a> <a href="m3.html" target="_blank" rel="noopener noreferrer" data-template-id="midterm-lesson-3" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-midterm rounded-full border px-3 py-1 text-xs font-bold">MIDTERMS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="midterm-lesson-3-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-lime-300"></p>
+        <h3 data-template-id="midterm-lesson-3-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a> <a href="m4.html" target="_blank" rel="noopener noreferrer" data-template-id="midterm-lesson-4" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-midterm rounded-full border px-3 py-1 text-xs font-bold">MIDTERMS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="midterm-lesson-4-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-lime-300"></p>
+        <h3 data-template-id="midterm-lesson-4-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a> <a href="m5.html" target="_blank" rel="noopener noreferrer" data-template-id="midterm-lesson-5" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-midterm rounded-full border px-3 py-1 text-xs font-bold">MIDTERMS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-lime-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="midterm-lesson-5-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-lime-300"></p>
+        <h3 data-template-id="midterm-lesson-5-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a>
+     </div>
+    </section>
+    <section class="mt-10" aria-labelledby="finals-heading">
+     <div class="mb-5 flex items-center gap-4">
+      <div>
+       <p data-template-id="finals-marker" class="canva-text mono text-xs font-bold uppercase tracking-[0.2em] text-orange-200"></p>
+       <h2 id="finals-heading" data-template-id="finals-title" class="canva-text mt-2 font-bold text-slate-50"></h2>
+      </div>
+      <div class="section-line"></div><i data-lucide="cpu" class="h-6 w-6 text-orange-300" aria-hidden="true"></i>
+     </div>
+     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"><a href="f1.html" target="_blank" rel="noopener noreferrer" data-template-id="final-lesson-1" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-final rounded-full border px-3 py-1 text-xs font-bold">FINALS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-orange-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="final-lesson-1-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-orange-200"></p>
+        <h3 data-template-id="final-lesson-1-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a> <a href="f2.html" target="_blank" rel="noopener noreferrer" data-template-id="final-lesson-2" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-final rounded-full border px-3 py-1 text-xs font-bold">FINALS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-orange-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="final-lesson-2-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-orange-200"></p>
+        <h3 data-template-id="final-lesson-2-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a> <a href="f3.html" target="_blank" rel="noopener noreferrer" data-template-id="final-lesson-3" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-final rounded-full border px-3 py-1 text-xs font-bold">FINALS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-orange-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="final-lesson-3-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-orange-200"></p>
+        <h3 data-template-id="final-lesson-3-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a> <a href="f4.html" target="_blank" rel="noopener noreferrer" data-template-id="final-lesson-4" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-final rounded-full border px-3 py-1 text-xs font-bold">FINALS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-orange-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="final-lesson-4-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-orange-200"></p>
+        <h3 data-template-id="final-lesson-4-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a> <a href="f5.html" target="_blank" rel="noopener noreferrer" data-template-id="final-lesson-5" class="canva-card lesson-card focus-ring">
+       <div class="flex items-start justify-between gap-3"><span class="period-final rounded-full border px-3 py-1 text-xs font-bold">FINALS</span> <i data-lucide="arrow-up-right" class="h-5 w-5 text-orange-300" aria-hidden="true"></i>
+       </div>
+       <div class="mt-10">
+        <p data-template-id="final-lesson-5-label" class="canva-text mono text-xs uppercase tracking-[0.16em] text-orange-200"></p>
+        <h3 data-template-id="final-lesson-5-title" class="canva-text mt-2 font-bold text-slate-50"></h3>
+       </div></a>
+     </div>
+    </section>
+   </main>
+   <footer data-template-id="footer-section" class="canva-footer mx-auto w-full max-w-7xl px-5 pb-8 pt-3 text-center text-sm text-slate-400 lg:px-8">
+    <p data-template-id="footer-text" class="canva-text"></p>
+   </footer>
+  </div>
+  <script src="/_sdk/0e8f359d3c23f6d5.editing_sdk.js" integrity="sha512-CBLuYm/olmgyMedTtPRFeqCRZcSWUh6/39ewyXAbnr1dsVHBACzZ59KGJZXvuWNHOHixfWegfuMN9JzmLEDIoA=="></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+    });
+  </script>
+ </body>
+</html>
