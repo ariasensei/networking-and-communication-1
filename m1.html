@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+ <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260819-01-6858913","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Canva Sans":"YAFLd8sKbwc,2","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YAFdJksXcAk,0","Libre Baskerville":"YACgEUFdPdA,0","Manrope":"YAHO2b2feC4,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YADLjI9qxTA,0","Nunito":"YACgEX8C5Gg,0","Oleo Script":"YACgEQQ14jI,0","Phantom Sans":"YAHO2E8Pb88,0","Playfair Display":"YACgEYmuCJE,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YADWjpfPmdk,0","Raleway":"YACgEVg3xZg,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Spectral":"YAHO2rVUHIM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Ubuntu":"YACgERDU--Q,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YADlN8CFZ8Q,0","ui-sans-serif":"YACkoN-xg4g,0"}}');</script><script src="/_sdk/7949ff62d67710d5.telemetry_sdk.js" integrity="sha512-KIvXA82Di44YY/RH9/63A9MuTuavYgDFG8PfErJn7Wli4K0LAOk+coo/aPXk3+ZNL96nHh9VYD4PE+fLes+laQ=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSI Layers &amp; Reference Model</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Fira Sans', sans-serif; background: #0a0e1a; color: #c8d6e5; }
+        .mono { font-family: 'Space Mono', monospace; }
+        
+        /* Cyber grid background */
+        .cyber-bg {
+            background: 
+                linear-gradient(rgba(0,255,200,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,200,0.03) 1px, transparent 1px),
+                radial-gradient(ellipse at 50% 0%, rgba(0,200,180,0.08) 0%, transparent 60%);
+            background-size: 60px 60px, 60px 60px, 100% 100%;
+        }
+
+        /* Glowing borders */
+        .glow-border {
+            border: 1px solid rgba(0,255,200,0.15);
+            box-shadow: 0 0 15px rgba(0,255,200,0.05), inset 0 0 15px rgba(0,255,200,0.02);
+        }
+
+        .glow-text { text-shadow: 0 0 10px rgba(0,255,200,0.4); }
+
+        /* Layer colors */
+        .layer-7 { border-left: 3px solid #a78bfa; }
+        .layer-6 { border-left: 3px solid #818cf8; }
+        .layer-5 { border-left: 3px solid #60a5fa; }
+        .layer-4 { border-left: 3px solid #34d399; }
+        .layer-3 { border-left: 3px solid #fbbf24; }
+        .layer-2 { border-left: 3px solid #f97316; }
+        .layer-1 { border-left: 3px solid #ef4444; }
+
+        .layer-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Nav */
+        .nav-link {
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+        }
+        .nav-link:hover {
+            border-left-color: #00ffc8;
+            color: #00ffc8;
+        }
+
+        /* Animated nodes */
+        #network-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .content-wrapper { position: relative; z-index: 1; }
+
+        /* Table styling */
+        .osi-table th { background: rgba(0,255,200,0.08); }
+        .osi-table td, .osi-table th { 
+            padding: 10px 14px; 
+            border: 1px solid rgba(0,255,200,0.1); 
+            font-size: 0.85rem;
+        }
+
+        /* Collapsible answers */
+        .answer-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .answer-content.open { max-height: 500px; }
+
+        .section-card {
+            background: rgba(10,18,40,0.8);
+            backdrop-filter: blur(4px);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar-nav { display: none; }
+        }
+
+        .encap-step {
+            background: rgba(0,255,200,0.04);
+            border: 1px solid rgba(0,255,200,0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 6px 0;
+        }
+    </style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/0e8d3a91e1c6f495.data_sdk.js" type="text/javascript" integrity="sha512-c00oDoGjsMgluCLLEyVl3suwEkgjOGGplVFbsilUoBg4aMKNmsL3mwsc9r0dPn95qiSZyjBousQXgROkAW7p/w=="></script>
+  <script src="/_sdk/eba18683f23e5798.resizing_sdk.js" type="text/javascript" integrity="sha512-E0UWUllhwPXaNJtjyTKXWKrIE+FruPfFpO4mRmMDP2LI+U9bOizy5npCq6xx/JyWcvSK7D3TFf2wFR2Mha9kbA=="></script>
+ </head>
+ <body data-template-id="__page-root" class="cyber-bg min-h-screen">
+  <canvas id="network-canvas"></canvas>
+  <div class="content-wrapper flex"><!-- Sidebar Nav -->
+   <nav class="sidebar-nav fixed left-0 top-0 h-full w-52 p-4 pt-8 overflow-y-auto" style="background:rgba(6,10,24,0.95); border-right:1px solid rgba(0,255,200,0.08);" aria-label="Section navigation">
+    <p class="mono text-xs text-teal-400 mb-4 uppercase tracking-wider">Navigation</p><a href="#intro" class="nav-link block text-gray-400 mb-1">Introduction</a> <a href="#why-models" class="nav-link block text-gray-400 mb-1">Why Models?</a> <a href="#osi-model" class="nav-link block text-gray-400 mb-1">The OSI Model</a> <a href="#layer7" class="nav-link block text-gray-400 mb-1">L7 Application</a> <a href="#layer6" class="nav-link block text-gray-400 mb-1">L6 Presentation</a> <a href="#layer5" class="nav-link block text-gray-400 mb-1">L5 Session</a> <a href="#layer4" class="nav-link block text-gray-400 mb-1">L4 Transport</a> <a href="#layer3" class="nav-link block text-gray-400 mb-1">L3 Network</a> <a href="#layer2" class="nav-link block text-gray-400 mb-1">L2 Data Link</a> <a href="#layer1" class="nav-link block text-gray-400 mb-1">L1 Physical</a> <a href="#comparison" class="nav-link block text-gray-400 mb-1">Comparison</a> <a href="#encapsulation" class="nav-link block text-gray-400 mb-1">Encapsulation</a> <a href="#troubleshooting" class="nav-link block text-gray-400 mb-1">Troubleshooting</a> <a href="#activities" class="nav-link block text-gray-400 mb-1">Activities</a> <a href="#summary" class="nav-link block text-gray-400 mb-1">Summary</a>
+   </nav><!-- Main Content -->
+   <main class="ml-0 lg:ml-52 w-full max-w-5xl mx-auto px-4 sm:px-8 py-10"><!-- Header -->
+    <header class="mb-12 text-center">
+     <p class="mono text-xs text-teal-400 uppercase tracking-widest mb-2">Networking and Communication 1</p>
+     <h1 class="text-3xl sm:text-4xl font-bold text-white glow-text mb-2">OSI Layers &amp; Reference Model</h1>
+     <p class="text-gray-400 text-sm">Midterm Lesson 1</p>
+    </header><!-- Learning Outcomes -->
+    <section id="intro" class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">I. Learning Outcomes</h2>
+     <ul class="space-y-2 text-sm text-gray-300 list-disc list-inside">
+      <li>Define computer networking and explain its importance</li>
+      <li>Explain the purpose of network reference models</li>
+      <li>Define the OSI (Open Systems Interconnection) Reference Model</li>
+      <li>Identify and describe the functions of the seven OSI layers</li>
+      <li>Identify common protocols, devices, and technologies at each layer</li>
+      <li>Explain encapsulation and decapsulation</li>
+      <li>Describe how data travels through the OSI layers</li>
+      <li>Apply the OSI model in network troubleshooting scenarios</li>
+     </ul>
+    </section><!-- Introduction to Networking -->
+    <section class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">II. Introduction to Computer Networking</h2>
+     <p class="text-sm text-gray-300 mb-3">Computer networking is the process of connecting two or more computers or devices so they can communicate and share resources.</p>
+     <p class="text-sm text-gray-400 mb-2">A network allows devices to share:</p>
+     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4"><span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-1 rounded">Data</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-1 rounded">Files</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-1 rounded">Internet</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-1 rounded">Printers</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-1 rounded">Applications</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-1 rounded">Servers</span>
+     </div>
+     <div class="mono text-xs text-gray-500 bg-black/30 rounded p-3">
+      Message Created → Data Prepared → Destination Identified → Data Sent → Transmitted → Response Received
+     </div>
+    </section><!-- Why Models -->
+    <section id="why-models" class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">III. Why Do We Need Network Models?</h2>
+     <p class="text-sm text-gray-300 mb-4">Without standards and models, different hardware, operating systems, and protocols would struggle to communicate. A network model provides a structured way to understand how network communication works.</p>
+     <h3 class="text-sm font-semibold text-white mb-2">Benefits:</h3>
+     <ul class="text-sm text-gray-300 space-y-1 list-disc list-inside">
+      <li>Understand network communication</li>
+      <li>Design networks</li>
+      <li>Develop network protocols</li>
+      <li>Troubleshoot network problems</li>
+      <li>Allow different technologies to work together</li>
+      <li>Standardize communication processes</li>
+     </ul>
+    </section><!-- OSI Model Overview -->
+    <section id="osi-model" class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">IV. The OSI Model</h2>
+     <p class="text-sm text-gray-300 mb-2"><strong class="text-white">OSI</strong> = Open Systems Interconnection</p>
+     <p class="text-sm text-gray-300 mb-4">A conceptual framework by ISO describing how data communication occurs between networked systems, divided into <strong class="text-white">seven layers</strong>.</p><!-- Visual Layer Stack -->
+     <div class="space-y-2 mb-6">
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-purple-500/10 border border-purple-500/20"><span class="layer-badge bg-purple-500/30 text-purple-300">7</span> <span class="text-sm font-medium text-purple-300">Application</span> <span class="text-xs text-gray-400 ml-auto">Network services to apps</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20"><span class="layer-badge bg-indigo-500/30 text-indigo-300">6</span> <span class="text-sm font-medium text-indigo-300">Presentation</span> <span class="text-xs text-gray-400 ml-auto">Translate, encrypt, compress</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20"><span class="layer-badge bg-blue-500/30 text-blue-300">5</span> <span class="text-sm font-medium text-blue-300">Session</span> <span class="text-xs text-gray-400 ml-auto">Manage sessions</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20"><span class="layer-badge bg-emerald-500/30 text-emerald-300">4</span> <span class="text-sm font-medium text-emerald-300">Transport</span> <span class="text-xs text-gray-400 ml-auto">End-to-end delivery</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20"><span class="layer-badge bg-yellow-500/30 text-yellow-300">3</span> <span class="text-sm font-medium text-yellow-300">Network</span> <span class="text-xs text-gray-400 ml-auto">Logical addressing &amp; routing</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20"><span class="layer-badge bg-orange-500/30 text-orange-300">2</span> <span class="text-sm font-medium text-orange-300">Data Link</span> <span class="text-xs text-gray-400 ml-auto">Frames &amp; MAC addresses</span>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-red-500/10 border border-red-500/20"><span class="layer-badge bg-red-500/30 text-red-300">1</span> <span class="text-sm font-medium text-red-300">Physical</span> <span class="text-xs text-gray-400 ml-auto">Raw bits over medium</span>
+      </div>
+     </div>
+     <div class="bg-black/30 rounded-lg p-4">
+      <p class="mono text-xs text-gray-400 mb-1">Mnemonic (7→1): <span class="text-teal-300">A</span>ll <span class="text-teal-300">P</span>eople <span class="text-teal-300">S</span>eem <span class="text-teal-300">T</span>o <span class="text-teal-300">N</span>eed <span class="text-teal-300">D</span>ata <span class="text-teal-300">P</span>rocessing</p>
+      <p class="mono text-xs text-gray-400">Mnemonic (1→7): <span class="text-teal-300">P</span>lease <span class="text-teal-300">D</span>o <span class="text-teal-300">N</span>ot <span class="text-teal-300">T</span>hrow <span class="text-teal-300">S</span>ausage <span class="text-teal-300">P</span>izza <span class="text-teal-300">A</span>way</p>
+     </div>
+    </section><!-- Layer 7 -->
+    <section id="layer7" class="section-card glow-border rounded-xl p-6 mb-8 layer-7">
+     <h2 class="text-xl font-semibold text-purple-300 mb-3">Layer 7 – Application</h2>
+     <p class="text-sm text-gray-300 mb-3">Provides network-related services directly to software applications. It does not mean the application itself — it provides services that allow applications to communicate over a network.</p>
+     <div class="grid sm:grid-cols-2 gap-4">
+      <div>
+       <p class="text-xs text-gray-400 uppercase mb-1">Protocols</p>
+       <p class="mono text-sm text-purple-200">HTTP, HTTPS, FTP, SMTP, DNS, DHCP, SSH</p>
+      </div>
+      <div>
+       <p class="text-xs text-gray-400 uppercase mb-1">Examples</p>
+       <p class="text-sm text-gray-300">Web browsing, Email, File transfer, Name resolution</p>
+      </div>
+     </div>
+    </section><!-- Layer 6 -->
+    <section id="layer6" class="section-card glow-border rounded-xl p-6 mb-8 layer-6">
+     <h2 class="text-xl font-semibold text-indigo-300 mb-3">Layer 6 – Presentation</h2>
+     <p class="text-sm text-gray-300 mb-3">Responsible for how data is represented or formatted. Performs data translation, encryption/decryption, compression/decompression, and character encoding.</p>
+     <div class="flex flex-wrap gap-2"><span class="text-xs bg-indigo-900/40 text-indigo-300 px-3 py-1 rounded">Translation</span> <span class="text-xs bg-indigo-900/40 text-indigo-300 px-3 py-1 rounded">Encryption</span> <span class="text-xs bg-indigo-900/40 text-indigo-300 px-3 py-1 rounded">Compression</span> <span class="text-xs bg-indigo-900/40 text-indigo-300 px-3 py-1 rounded">Encoding</span>
+     </div>
+    </section><!-- Layer 5 -->
+    <section id="layer5" class="section-card glow-border rounded-xl p-6 mb-8 layer-5">
+     <h2 class="text-xl font-semibold text-blue-300 mb-3">Layer 5 – Session</h2>
+     <p class="text-sm text-gray-300 mb-3">Establishes, manages, and terminates communication sessions between applications. A session is a logical conversation between two systems.</p>
+     <div class="flex flex-wrap gap-2"><span class="text-xs bg-blue-900/40 text-blue-300 px-3 py-1 rounded">Establish</span> <span class="text-xs bg-blue-900/40 text-blue-300 px-3 py-1 rounded">Maintain</span> <span class="text-xs bg-blue-900/40 text-blue-300 px-3 py-1 rounded">Synchronize</span> <span class="text-xs bg-blue-900/40 text-blue-300 px-3 py-1 rounded">Terminate</span>
+     </div>
+    </section><!-- Layer 4 -->
+    <section id="layer4" class="section-card glow-border rounded-xl p-6 mb-8 layer-4">
+     <h2 class="text-xl font-semibold text-emerald-300 mb-3">Layer 4 – Transport</h2>
+     <p class="text-sm text-gray-300 mb-3">Provides end-to-end communication between applications on different devices. Responsible for segmentation, reassembly, flow control, error recovery, and port addressing.</p>
+     <div class="grid sm:grid-cols-2 gap-4 mb-3">
+      <div class="bg-emerald-900/20 rounded-lg p-3 border border-emerald-500/20">
+       <p class="text-sm font-semibold text-emerald-300 mb-1">TCP</p>
+       <p class="text-xs text-gray-400">Reliable, connection-oriented. Establishes connections, numbers segments, retransmits lost data, ensures order.</p>
+      </div>
+      <div class="bg-emerald-900/20 rounded-lg p-3 border border-emerald-500/20">
+       <p class="text-sm font-semibold text-emerald-300 mb-1">UDP</p>
+       <p class="text-xs text-gray-400">Connectionless, low overhead. Useful when speed matters more than guaranteed delivery.</p>
+      </div>
+     </div>
+     <div class="mono text-xs text-gray-400 bg-black/30 p-3 rounded">
+      Port examples: HTTP=80 | HTTPS=443 | DNS=53
+     </div>
+    </section><!-- Layer 3 -->
+    <section id="layer3" class="section-card glow-border rounded-xl p-6 mb-8 layer-3">
+     <h2 class="text-xl font-semibold text-yellow-300 mb-3">Layer 3 – Network</h2>
+     <p class="text-sm text-gray-300 mb-3">Responsible for logical addressing and routing. Determines how packets travel from one network to another.</p>
+     <div class="grid sm:grid-cols-2 gap-4">
+      <div>
+       <p class="text-xs text-gray-400 uppercase mb-1">Functions</p>
+       <p class="text-sm text-gray-300">Logical addressing, routing, path selection, packet forwarding</p>
+      </div>
+      <div>
+       <p class="text-xs text-gray-400 uppercase mb-1">Key Protocol &amp; Device</p>
+       <p class="mono text-sm text-yellow-200">IP (IPv4/IPv6) • Router</p>
+       <p class="mono text-xs text-gray-500 mt-1">e.g. 192.168.1.10</p>
+      </div>
+     </div>
+    </section><!-- Layer 2 -->
+    <section id="layer2" class="section-card glow-border rounded-xl p-6 mb-8 layer-2">
+     <h2 class="text-xl font-semibold text-orange-300 mb-3">Layer 2 – Data Link</h2>
+     <p class="text-sm text-gray-300 mb-3">Responsible for communication over a local network link. Organizes data into frames and uses MAC addresses for local delivery.</p>
+     <div class="grid sm:grid-cols-2 gap-4">
+      <div>
+       <p class="text-xs text-gray-400 uppercase mb-1">Functions</p>
+       <p class="text-sm text-gray-300">Framing, MAC addressing, error detection, media access control</p>
+      </div>
+      <div>
+       <p class="text-xs text-gray-400 uppercase mb-1">Devices &amp; Address</p>
+       <p class="text-sm text-gray-300">Switches, Bridges</p>
+       <p class="mono text-xs text-orange-200 mt-1">MAC: 00:1A:2B:3C:4D:5E</p>
+      </div>
+     </div>
+    </section><!-- Layer 1 -->
+    <section id="layer1" class="section-card glow-border rounded-xl p-6 mb-8 layer-1">
+     <h2 class="text-xl font-semibold text-red-300 mb-3">Layer 1 – Physical</h2>
+     <p class="text-sm text-gray-300 mb-3">The lowest layer. Deals with actual transmission of bits (0s and 1s) over a physical or wireless medium.</p>
+     <div class="flex flex-wrap gap-2"><span class="text-xs bg-red-900/40 text-red-300 px-3 py-1 rounded">UTP Cable</span> <span class="text-xs bg-red-900/40 text-red-300 px-3 py-1 rounded">Fiber-optic</span> <span class="text-xs bg-red-900/40 text-red-300 px-3 py-1 rounded">Coaxial</span> <span class="text-xs bg-red-900/40 text-red-300 px-3 py-1 rounded">Wireless</span> <span class="text-xs bg-red-900/40 text-red-300 px-3 py-1 rounded">RJ-45</span> <span class="text-xs bg-red-900/40 text-red-300 px-3 py-1 rounded">Hubs</span> <span class="text-xs bg-red-900/40 text-red-300 px-3 py-1 rounded">Repeaters</span>
+     </div>
+    </section><!-- Comparison Table -->
+    <section id="comparison" class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">VI. OSI Layer Comparison</h2>
+     <div class="overflow-x-auto">
+      <table class="osi-table w-full text-sm">
+       <thead>
+        <tr class="text-left text-teal-300">
+         <th>Layer</th>
+         <th>Name</th>
+         <th>Data Unit</th>
+         <th>Address</th>
+         <th>Examples</th>
+        </tr>
+       </thead>
+       <tbody class="text-gray-300">
+        <tr>
+         <td>7</td>
+         <td>Application</td>
+         <td>Data</td>
+         <td>Service</td>
+         <td class="mono text-xs">HTTP, DNS, FTP</td>
+        </tr>
+        <tr>
+         <td>6</td>
+         <td>Presentation</td>
+         <td>Data</td>
+         <td>—</td>
+         <td class="text-xs">Encryption, compression</td>
+        </tr>
+        <tr>
+         <td>5</td>
+         <td>Session</td>
+         <td>Data</td>
+         <td>Session</td>
+         <td class="text-xs">Session management</td>
+        </tr>
+        <tr>
+         <td>4</td>
+         <td>Transport</td>
+         <td>Segment</td>
+         <td>Port</td>
+         <td class="mono text-xs">TCP, UDP</td>
+        </tr>
+        <tr>
+         <td>3</td>
+         <td>Network</td>
+         <td>Packet</td>
+         <td>IP</td>
+         <td class="mono text-xs">IPv4, IPv6</td>
+        </tr>
+        <tr>
+         <td>2</td>
+         <td>Data Link</td>
+         <td>Frame</td>
+         <td>MAC</td>
+         <td class="mono text-xs">Ethernet</td>
+        </tr>
+        <tr>
+         <td>1</td>
+         <td>Physical</td>
+         <td>Bits</td>
+         <td>—</td>
+         <td class="text-xs">Cables, signals</td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </section><!-- Encapsulation -->
+    <section id="encapsulation" class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">VII–IX. Encapsulation &amp; Decapsulation</h2>
+     <div class="grid sm:grid-cols-2 gap-6">
+      <div>
+       <h3 class="text-sm font-semibold text-green-300 mb-3">Encapsulation (Sender ↓)</h3>
+       <div class="encap-step">
+        <span class="mono text-xs text-green-300">L7–5</span> <span class="text-sm text-gray-300 ml-2">Data created</span>
+       </div>
+       <div class="encap-step">
+        <span class="mono text-xs text-green-300">L4</span> <span class="text-sm text-gray-300 ml-2">+ Transport header → <strong class="text-white">Segment</strong></span>
+       </div>
+       <div class="encap-step">
+        <span class="mono text-xs text-green-300">L3</span> <span class="text-sm text-gray-300 ml-2">+ IP header → <strong class="text-white">Packet</strong></span>
+       </div>
+       <div class="encap-step">
+        <span class="mono text-xs text-green-300">L2</span> <span class="text-sm text-gray-300 ml-2">+ Header/Trailer → <strong class="text-white">Frame</strong></span>
+       </div>
+       <div class="encap-step">
+        <span class="mono text-xs text-green-300">L1</span> <span class="text-sm text-gray-300 ml-2">Transmitted as <strong class="text-white">Bits</strong></span>
+       </div>
+      </div>
+      <div>
+       <h3 class="text-sm font-semibold text-cyan-300 mb-3">Decapsulation (Receiver ↑)</h3>
+       <div class="encap-step">
+        <span class="mono text-xs text-cyan-300">L1</span> <span class="text-sm text-gray-300 ml-2">Bits received</span>
+       </div>
+       <div class="encap-step">
+        <span class="mono text-xs text-cyan-300">L2</span> <span class="text-sm text-gray-300 ml-2">Frame → strip header/trailer</span>
+       </div>
+       <div class="encap-step">
+        <span class="mono text-xs text-cyan-300">L3</span> <span class="text-sm text-gray-300 ml-2">Packet → process IP header</span>
+       </div>
+       <div class="encap-step">
+        <span class="mono text-xs text-cyan-300">L4</span> <span class="text-sm text-gray-300 ml-2">Segment → reassemble</span>
+       </div>
+       <div class="encap-step">
+        <span class="mono text-xs text-cyan-300">L7–5</span> <span class="text-sm text-gray-300 ml-2">Data delivered to application</span>
+       </div>
+      </div>
+     </div>
+     <div class="mt-4 bg-black/30 rounded-lg p-3 text-center">
+      <p class="mono text-sm text-teal-300">Data → Segment → Packet → Frame → Bits</p>
+      <p class="text-xs text-gray-500 mt-1">Encapsulation = Pack | Decapsulation = Unpack</p>
+     </div>
+    </section><!-- Example: Opening a Website -->
+    <section class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">X. Example: Opening a Website</h2>
+     <div class="space-y-2 text-sm">
+      <div class="flex gap-3 items-start">
+       <span class="layer-badge bg-purple-500/30 text-purple-300 shrink-0">L7</span><span class="text-gray-300">Browser requests info via HTTP/HTTPS</span>
+      </div>
+      <div class="flex gap-3 items-start">
+       <span class="layer-badge bg-indigo-500/30 text-indigo-300 shrink-0">L6</span><span class="text-gray-300">Data formatted, encrypted (TLS)</span>
+      </div>
+      <div class="flex gap-3 items-start">
+       <span class="layer-badge bg-blue-500/30 text-blue-300 shrink-0">L5</span><span class="text-gray-300">Session established &amp; managed</span>
+      </div>
+      <div class="flex gap-3 items-start">
+       <span class="layer-badge bg-emerald-500/30 text-emerald-300 shrink-0">L4</span><span class="text-gray-300">TCP provides reliable transport, port 443</span>
+      </div>
+      <div class="flex gap-3 items-start">
+       <span class="layer-badge bg-yellow-500/30 text-yellow-300 shrink-0">L3</span><span class="text-gray-300">IP addressing identifies source/destination, routed</span>
+      </div>
+      <div class="flex gap-3 items-start">
+       <span class="layer-badge bg-orange-500/30 text-orange-300 shrink-0">L2</span><span class="text-gray-300">Packet placed into frame, MAC used locally</span>
+      </div>
+      <div class="flex gap-3 items-start">
+       <span class="layer-badge bg-red-500/30 text-red-300 shrink-0">L1</span><span class="text-gray-300">Frame transmitted as signals</span>
+      </div>
+     </div>
+    </section><!-- Troubleshooting -->
+    <section id="troubleshooting" class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">XI–XII. OSI &amp; Troubleshooting</h2>
+     <p class="text-sm text-gray-300 mb-4">Troubleshoot systematically from bottom up:</p>
+     <div class="space-y-3">
+      <div class="bg-red-900/10 border border-red-500/20 rounded-lg p-3">
+       <p class="text-sm font-medium text-red-300">Layer 1 – Physical</p>
+       <p class="text-xs text-gray-400">Cable connected? Link light? Power? Connector intact?</p>
+      </div>
+      <div class="bg-orange-900/10 border border-orange-500/20 rounded-lg p-3">
+       <p class="text-sm font-medium text-orange-300">Layer 2 – Data Link</p>
+       <p class="text-xs text-gray-400">Local network communication? Switch? VLAN? NIC?</p>
+      </div>
+      <div class="bg-yellow-900/10 border border-yellow-500/20 rounded-lg p-3">
+       <p class="text-sm font-medium text-yellow-300">Layer 3 – Network</p>
+       <p class="text-xs text-gray-400">Valid IP? Correct subnet? Default gateway? Routing?</p>
+      </div>
+      <div class="bg-emerald-900/10 border border-emerald-500/20 rounded-lg p-3">
+       <p class="text-sm font-medium text-emerald-300">Layer 4 – Transport</p>
+       <p class="text-xs text-gray-400">TCP/UDP? Port blocked? Firewall? Connection state?</p>
+      </div>
+      <div class="bg-purple-900/10 border border-purple-500/20 rounded-lg p-3">
+       <p class="text-sm font-medium text-purple-300">Layers 5–7 – Upper</p>
+       <p class="text-xs text-gray-400">Application running? DNS resolving? Service configured?</p>
+      </div>
+     </div>
+    </section><!-- Activities -->
+    <section id="activities" class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">XIII–XVI. Activities</h2><!-- Activity 1 -->
+     <div class="mb-6">
+      <h3 class="text-sm font-semibold text-white mb-2">Activity 1 – Identify the OSI Layer</h3>
+      <div class="space-y-2" id="activity1">
+       <div class="activity-item flex justify-between items-center bg-black/20 rounded p-2 cursor-pointer" onclick="toggleAnswer(this)"><span class="text-xs text-gray-300">1. Responsible for transmitting bits</span> <span class="answer text-xs text-teal-300 opacity-0 transition-opacity">Physical (L1)</span>
+       </div>
+       <div class="activity-item flex justify-between items-center bg-black/20 rounded p-2 cursor-pointer" onclick="toggleAnswer(this)"><span class="text-xs text-gray-300">2. Uses MAC addresses</span> <span class="answer text-xs text-teal-300 opacity-0 transition-opacity">Data Link (L2)</span>
+       </div>
+       <div class="activity-item flex justify-between items-center bg-black/20 rounded p-2 cursor-pointer" onclick="toggleAnswer(this)"><span class="text-xs text-gray-300">3. Uses IP addresses for logical addressing</span> <span class="answer text-xs text-teal-300 opacity-0 transition-opacity">Network (L3)</span>
+       </div>
+       <div class="activity-item flex justify-between items-center bg-black/20 rounded p-2 cursor-pointer" onclick="toggleAnswer(this)"><span class="text-xs text-gray-300">4. Responsible for TCP and UDP</span> <span class="answer text-xs text-teal-300 opacity-0 transition-opacity">Transport (L4)</span>
+       </div>
+       <div class="activity-item flex justify-between items-center bg-black/20 rounded p-2 cursor-pointer" onclick="toggleAnswer(this)"><span class="text-xs text-gray-300">5. Provides services to network applications</span> <span class="answer text-xs text-teal-300 opacity-0 transition-opacity">Application (L7)</span>
+       </div>
+       <div class="activity-item flex justify-between items-center bg-black/20 rounded p-2 cursor-pointer" onclick="toggleAnswer(this)"><span class="text-xs text-gray-300">6. Data formatting and encryption</span> <span class="answer text-xs text-teal-300 opacity-0 transition-opacity">Presentation (L6)</span>
+       </div>
+       <div class="activity-item flex justify-between items-center bg-black/20 rounded p-2 cursor-pointer" onclick="toggleAnswer(this)"><span class="text-xs text-gray-300">7. Manages communication sessions</span> <span class="answer text-xs text-teal-300 opacity-0 transition-opacity">Session (L5)</span>
+       </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-2 italic">Click each item to reveal the answer</p>
+     </div><!-- Activity 2 -->
+     <div class="mb-6">
+      <h3 class="text-sm font-semibold text-white mb-2">Activity 2 – Match Device/Technology to Layer</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">Ethernet switch</p>
+        <p class="answer text-xs text-orange-300 opacity-0 transition-opacity">Layer 2</p>
+       </div>
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">Router</p>
+        <p class="answer text-xs text-yellow-300 opacity-0 transition-opacity">Layer 3</p>
+       </div>
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">UTP cable</p>
+        <p class="answer text-xs text-red-300 opacity-0 transition-opacity">Layer 1</p>
+       </div>
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">IP address</p>
+        <p class="answer text-xs text-yellow-300 opacity-0 transition-opacity">Layer 3</p>
+       </div>
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">TCP</p>
+        <p class="answer text-xs text-emerald-300 opacity-0 transition-opacity">Layer 4</p>
+       </div>
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">HTTP</p>
+        <p class="answer text-xs text-purple-300 opacity-0 transition-opacity">Layer 7</p>
+       </div>
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">MAC address</p>
+        <p class="answer text-xs text-orange-300 opacity-0 transition-opacity">Layer 2</p>
+       </div>
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">RJ-45</p>
+        <p class="answer text-xs text-red-300 opacity-0 transition-opacity">Layer 1</p>
+       </div>
+       <div class="bg-black/20 rounded p-2 text-center cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">UDP</p>
+        <p class="answer text-xs text-emerald-300 opacity-0 transition-opacity">Layer 4</p>
+       </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-2 italic">Click to reveal</p>
+     </div><!-- Activity 3 -->
+     <div class="mb-6">
+      <h3 class="text-sm font-semibold text-white mb-2">Activity 3 – Encapsulation Order</h3>
+      <p class="text-xs text-gray-400 mb-2">Arrange: Frame – Data – Bits – Packet – Segment</p>
+      <div class="bg-black/30 rounded p-3 cursor-pointer" onclick="toggleAnswer(this)">
+       <p class="text-xs text-gray-400">Click to reveal correct order:</p>
+       <p class="answer mono text-sm text-teal-300 opacity-0 transition-opacity mt-1">Data → Segment → Packet → Frame → Bits</p>
+      </div>
+     </div><!-- Activity 4 -->
+     <div>
+      <h3 class="text-sm font-semibold text-white mb-2">Activity 4 – Troubleshooting Scenarios</h3>
+      <div class="space-y-2">
+       <div class="bg-black/20 rounded p-3 cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">Broken Ethernet cable connector</p>
+        <p class="answer text-xs text-red-300 opacity-0 transition-opacity">Layer 1 – Physical</p>
+       </div>
+       <div class="bg-black/20 rounded p-3 cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">Incorrect default gateway configured</p>
+        <p class="answer text-xs text-yellow-300 opacity-0 transition-opacity">Layer 3 – Network</p>
+       </div>
+       <div class="bg-black/20 rounded p-3 cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">Required port is blocked by firewall</p>
+        <p class="answer text-xs text-emerald-300 opacity-0 transition-opacity">Layer 4 – Transport</p>
+       </div>
+       <div class="bg-black/20 rounded p-3 cursor-pointer" onclick="toggleAnswer(this)">
+        <p class="text-xs text-gray-300">Web application not responding</p>
+        <p class="answer text-xs text-purple-300 opacity-0 transition-opacity">Layer 7 – Application</p>
+       </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-2 italic">Click to reveal</p>
+     </div>
+    </section><!-- Quick Review -->
+    <section class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">XIX. Quick Review Questions</h2>
+     <ol class="text-sm text-gray-300 space-y-2 list-decimal list-inside">
+      <li>What does OSI stand for? <span class="text-xs text-gray-500">— Open Systems Interconnection</span></li>
+      <li>Who developed it? <span class="text-xs text-gray-500">— ISO (International Organization for Standardization)</span></li>
+      <li>How many layers? <span class="text-xs text-gray-500">— Seven</span></li>
+      <li>Physical Layer function? <span class="text-xs text-gray-500">— Transmits raw bits</span></li>
+      <li>Data Link address type? <span class="text-xs text-gray-500">— MAC address</span></li>
+      <li>Network Layer address type? <span class="text-xs text-gray-500">— IP address</span></li>
+      <li>TCP/UDP layer? <span class="text-xs text-gray-500">— Transport (L4)</span></li>
+      <li>Routing layer? <span class="text-xs text-gray-500">— Network (L3)</span></li>
+      <li>Session management layer? <span class="text-xs text-gray-500">— Session (L5)</span></li>
+      <li>Encryption layer? <span class="text-xs text-gray-500">— Presentation (L6)</span></li>
+      <li>Layer providing services to apps? <span class="text-xs text-gray-500">— Application (L7)</span></li>
+      <li>What is encapsulation? <span class="text-xs text-gray-500">— Adding protocol info going down</span></li>
+      <li>What is decapsulation? <span class="text-xs text-gray-500">— Removing protocol info going up</span></li>
+      <li>MAC vs IP? <span class="text-xs text-gray-500">— Hardware/local vs Logical/routable</span></li>
+      <li>Why useful for troubleshooting? <span class="text-xs text-gray-500">— Systematic layer-by-layer isolation</span></li>
+     </ol>
+    </section><!-- Summary -->
+    <section id="summary" class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">XX. Lesson Summary</h2>
+     <p class="text-sm text-gray-300 mb-3">The OSI Reference Model divides network communication into seven logical layers. Each layer has a specific responsibility.</p>
+     <div class="bg-black/30 rounded-lg p-4 mb-4">
+      <p class="mono text-sm text-center text-teal-300">Physical → Data Link → Network → Transport → Session → Presentation → Application</p>
+     </div>
+     <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+      <li><strong class="text-white">Encapsulation:</strong> Data moves down, protocol info added</li>
+      <li><strong class="text-white">Decapsulation:</strong> Data moves up, protocol info removed</li>
+      <li><strong class="text-white">Troubleshooting:</strong> Work systematically from Layer 1 upward</li>
+     </ul>
+     <div class="mt-4 p-3 bg-teal-900/20 border border-teal-500/20 rounded-lg">
+      <p class="text-sm text-teal-200 font-medium">Key takeaway: Don't just memorize — understand what each layer does, what it handles, and how they work together.</p>
+     </div>
+    </section><!-- Assignment -->
+    <section class="section-card glow-border rounded-xl p-6 mb-8">
+     <h2 class="text-xl font-semibold text-teal-300 mb-4">XXI. Assignment: "Follow the Data"</h2>
+     <p class="text-sm text-gray-300 mb-3">Choose one scenario and create a diagram showing how communication passes through the seven OSI layers:</p>
+     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4"><span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-2 rounded text-center">Messenger message</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-2 rounded text-center">Opening a website</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-2 rounded text-center">Sending an email</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-2 rounded text-center">Uploading a file</span> <span class="text-xs bg-teal-900/30 text-teal-300 px-3 py-2 rounded text-center">Online gaming</span>
+     </div>
+     <p class="text-xs text-gray-400">For each layer provide: Layer number, name, function, example protocol, and what happens to data at that layer.</p>
+    </section>
+    <footer class="text-center py-8">
+     <p class="mono text-xs text-gray-600">Networking &amp; Communication 1 • Midterm Lesson 1</p>
+    </footer>
+   </main>
+  </div>
+  <script src="/_sdk/d97541380e824b1a.editing_sdk.js" integrity="sha512-iBVkuiyctyjmaqUwrsoYSc/nxwymdEKZMKPeBCNj6uN/7hFPTiMVeunYJjJVnUh1GNECKEyCerl7IHtlqhzSYQ=="></script>
+  <script>
+        // Toggle answer visibility
+        function toggleAnswer(el) {
+            const answer = el.querySelector('.answer');
+            if (answer) {
+                answer.classList.toggle('opacity-0');
+                answer.classList.toggle('opacity-100');
+            }
+        }
+
+        // Network nodes animation
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let nodes = [];
+        let w, h;
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function createNodes() {
+            nodes = [];
+            const count = Math.floor((w * h) / 25000);
+            for (let i = 0; i < count; i++) {
+                nodes.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    r: Math.random() * 1.5 + 0.5
+                });
+            }
+        }
+        createNodes();
+
+        function animate() {
+            ctx.clearRect(0, 0, w, h);
+            for (let i = 0; i < nodes.length; i++) {
+                const n = nodes[i];
+                n.x += n.vx;
+                n.y += n.vy;
+                if (n.x < 0 || n.x > w) n.vx *= -1;
+                if (n.y < 0 || n.y > h) n.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0,255,200,0.5)';
+                ctx.fill();
+
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const m = nodes[j];
+                    const dx = n.x - m.x;
+                    const dy = n.y - m.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(n.x, n.y);
+                        ctx.lineTo(m.x, m.y);
+                        ctx.strokeStyle = `rgba(0,255,200,${0.15 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+ </body>
+</html>
