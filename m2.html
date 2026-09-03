@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Networking and Communication 1 - Midterm Lesson 2</title>
+<style>
+
+:root{--bg:#07111f;--panel:#0d1b2d;--text:#edf7ff;--muted:#9db5c9;--accent:#00d4ff;--accent2:#7df9c1;--warn:#ffca5c;--danger:#ff6b7a;--line:#23435e}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#02070d;color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;overflow:hidden}
+.slide{display:none;position:absolute;inset:0;padding:26px 42px 22px;background:radial-gradient(circle at 85% 12%,rgba(0,212,255,.12),transparent 28%),linear-gradient(135deg,#07111f,#081827 55%,#06101c)}
+.slide.active{display:flex;flex-direction:column}
+.topline,.footer{display:flex;justify-content:space-between;color:var(--muted);font-size:14px}
+.topline{padding-bottom:12px;border-bottom:1px solid var(--line)}
+.footer{padding-top:12px;border-top:1px solid var(--line);margin-top:auto}
+.content{max-width:1400px;width:100%;margin:auto;padding:14px 10px}
+h1{font-size:clamp(30px,3.2vw,50px);margin:0 0 22px;line-height:1.05}
+h1:after{content:"";display:block;width:90px;height:5px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:5px;margin-top:12px}
+h2{font-size:clamp(26px,3vw,46px);margin:10px 0} h3{font-size:clamp(20px,2vw,28px);margin:10px 0}
+p,li,td,th{font-size:clamp(17px,1.4vw,24px);line-height:1.4}
+li{margin:6px 0}.lead{font-size:clamp(21px,2vw,31px);color:#dff7ff}.center{text-align:center}
+.title-slide .content{text-align:center}.title-slide h1:after{margin:12px auto}.hero{padding:30px 5vw}
+.badge{display:inline-block;border:1px solid var(--accent);background:rgba(0,212,255,.12);padding:8px 15px;border-radius:999px;color:var(--accent);font-weight:800}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.panel,.card{background:linear-gradient(180deg,#10253c,#09192a);border:1px solid var(--line);border-radius:18px;padding:20px}
+.card{display:flex;flex-direction:column;gap:7px;justify-content:center;min-height:120px}.card span{color:var(--muted)}.card strong{color:var(--accent2)}.card.accent{border-color:var(--accent)}
+.emoji{font-size:40px}.giant{font-size:78px}
+.flow,.memory,.callout,.warning,.question,.teacher{padding:16px 19px;border-radius:14px;margin-top:18px;background:#0c2237;border:1px solid var(--line);font-size:clamp(18px,1.4vw,23px)}
+.flow{text-align:center;font-weight:800}.memory{border-color:#2d8c79;background:#0b2b2a}.callout{border-left:6px solid var(--accent)}
+.warning{border-left:6px solid var(--warn);background:#2d250e}.question{border-left:6px solid var(--accent2);background:#0d2927}
+table{width:100%;border-collapse:collapse;background:rgba(8,27,45,.75);border-radius:14px;overflow:hidden}
+th{background:#0d3654;color:var(--accent2);text-align:left}td,th{padding:11px 13px;border-bottom:1px solid var(--line)}
+.smalltable td,.smalltable th{font-size:clamp(14px,1.05vw,18px);padding:8px 9px}
+.pairbox{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}.pairbox span{background:#102b44;padding:16px;text-align:center;border-radius:12px}
+.layers{width:78%;margin:auto;padding:14px;background:#132b43;border-radius:50px;border:8px solid #182d3b}.layers div{text-align:center;padding:9px;border-radius:30px;margin:4px;background:#274b67}.layers div:last-child{background:#b88740;color:#111;font-weight:800}
+.fiber{font-size:34px;text-align:center;padding:28px;border:1px solid var(--accent);border-radius:18px;color:var(--accent2)}
+.wireless{display:flex;align-items:center;justify-content:center;gap:30px;margin:22px 0}.wireless div{font-size:62px;text-align:center}.wireless small{display:block;font-size:17px;color:var(--muted)}.wireless b{font-size:35px;color:var(--accent)}
+.road{display:grid;gap:16px;margin:22px 0}.road div{display:flex;justify-content:space-between;background:#13263b;padding:16px;border-radius:14px;width:65%}.road .wide{width:100%}
+.atten{display:flex;align-items:center;gap:12px}.atten div{height:60px;border-radius:10px;background:linear-gradient(90deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;color:#00131c;font-weight:900}.s1{width:36%}.s2{width:24%}.s3{width:13%}
+.speech{font-size:30px;padding:25px;background:#11293e;border-radius:18px}.connector{background:#132d45;border:3px solid #4d7da0;padding:20px;border-radius:16px;text-align:center}.connector div{letter-spacing:.45em;color:var(--accent2);font-weight:900}
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:16px}.pairs div{padding:20px;border:1px solid var(--line);border-radius:14px;display:flex;justify-content:space-between}
+.standards{display:grid;grid-template-columns:1fr 1fr;gap:26px;max-width:800px;margin:30px auto}.standards div{background:#0f2940;border:2px solid var(--accent);border-radius:18px;padding:24px;text-align:center}.standards span{display:block;font-size:60px;font-weight:900;color:var(--accent)}.standards b{font-size:29px}
+.cablemap{display:flex;align-items:center;justify-content:center;margin:26px 0}.cablemap div{padding:16px 24px;border:2px solid var(--accent);border-radius:14px;background:#0e2c45;font-size:23px;font-weight:900}.cablemap span{height:8px;width:45%;background:linear-gradient(90deg,var(--accent),var(--accent2))}.cablemap span.cross{background:linear-gradient(90deg,var(--accent2),var(--warn))}.cablemap.small div{font-size:17px;padding:11px 14px}.cablemap.small span{width:30%}
+.links{display:grid;gap:13px}.links div{font-size:27px;text-align:center;background:#10263b;padding:14px;border-radius:13px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.steps div{background:#10263b;border:1px solid var(--line);border-radius:15px;padding:17px;min-height:140px}.steps span{display:inline-flex;width:36px;height:36px;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:#00131c;font-weight:900}.steps b{display:block;font-size:21px;margin-top:7px}.steps small{display:block;color:var(--muted);font-size:16px;margin-top:7px}
+.wiring{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin:24px 0}.wiring div{padding:14px 5px;text-align:center;border-radius:9px;background:#10283e;font-size:14px;border:1px solid var(--line)}.wiring b{font-size:13px}.ascii{font-family:monospace;font-size:52px;letter-spacing:.22em;color:var(--accent2);text-align:center}
+.tester{display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px;max-width:620px;margin:18px auto;background:#0d2438;padding:22px;border-radius:16px;text-align:center;font-size:21px;line-height:1.35}.tlines{color:var(--accent);padding-top:30px}.tester.mini{font-size:18px}.bad{color:var(--danger);font-weight:900}
+.problems{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.scenarios{display:grid;grid-template-columns:1fr 1fr;gap:16px}.qa{display:grid;grid-template-columns:1fr 1fr;gap:13px}.qa div{background:#10283e;border:1px solid var(--line);border-radius:13px;padding:17px;font-size:20px}.qa span{display:block;color:var(--accent2);margin-top:7px}
+.record{background:white;color:#14202a;border-radius:18px;padding:28px;max-width:900px;margin:auto}.record p{font-size:21px}.blank{height:90px;border-bottom:2px solid #555}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answers div{display:flex;gap:12px;align-items:center;background:#10283e;padding:12px;border-radius:12px}.answers b{display:inline-flex;min-width:32px;height:32px;align-items:center;justify-content:center;background:var(--accent);color:#00131c;border-radius:50%}
+@media(max-width:900px){.two,.three,.grid4,.grid5,.problems,.scenarios,.pairs,.qa,.answers{grid-template-columns:1fr 1fr}.slide{padding:18px}.content{overflow:auto}.steps{grid-template-columns:1fr 1fr}}
+@media print{body{overflow:visible}.slide{display:flex!important;position:relative;min-height:100vh;page-break-after:always}}
+
+</style>
+</head>
+<body>
+<section class="slide title-slide" data-slide="1">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Networking and Communication 1</h1>
+<div class="hero">
+  <div class="badge">MIDTERM • LESSON 2</div>
+  <h2>Network Media and Physical Transmission</h2>
+  <h3>Network Cable Connections and Wiring Standards</h3>
+  <p class="lead">Understanding how data travels — and how to build, wire, test, and troubleshoot Ethernet cables.</p>
+</div>
+</div>
+        <div class="footer"><span>1 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="2">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Learning Outcomes</h1>
+<ul class="big-list">
+<li>Explain different types of network media.</li>
+<li>Identify their characteristics, advantages, disadvantages, and common uses.</li>
+<li>Perform different types of cable connection.</li>
+<li>Differentiate straight-through and crossover cables.</li>
+<li>Explain and apply T568A and T568B wiring standards.</li>
+<li>Create and test a basic Ethernet cable.</li>
+<li>Select appropriate network media for different situations.</li>
+</ul>
+</div>
+        <div class="footer"><span>2 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="3">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>What Is Network Media?</h1>
+<p class="lead">Network media is the <strong>pathway used to carry data signals</strong> from one network device to another.</p>
+<div class="grid4">
+<div class="card"><div class="emoji">🚗</div><b>Cars</b><span>need roads</span></div>
+<div class="card"><div class="emoji">🚆</div><b>Trains</b><span>need railways</span></div>
+<div class="card"><div class="emoji">💧</div><b>Water</b><span>needs pipes</span></div>
+<div class="card accent"><div class="emoji">💻</div><b>Network Data</b><span>needs network media</span></div>
+</div>
+<div class="flow">Computer → Ethernet Cable → Switch → Router → Internet</div>
+</div>
+        <div class="footer"><span>3 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="4">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Two Main Types of Network Media</h1>
+<div class="two">
+<div class="panel"><h3>Guided Media</h3><p>The signal travels through a <strong>physical cable</strong>.</p>
+<ul><li>Twisted Pair</li><li>Coaxial Cable</li><li>Fiber-Optic Cable</li></ul></div>
+<div class="panel"><h3>Unguided Media</h3><p>The signal travels through <strong>air or space</strong>.</p>
+<ul><li>Wi-Fi</li><li>Bluetooth</li><li>Cellular</li><li>Microwave</li><li>Satellite</li></ul></div>
+</div>
+</div>
+        <div class="footer"><span>4 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="5">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Twisted Pair Cable</h1>
+<div class="two">
+<div><p>Twisted pair is one of the <strong>most commonly used media in LANs</strong>.</p>
+<p>Inside the cable are <strong>8 conductors arranged into 4 twisted pairs</strong>.</p>
+<div class="pairbox"><span>Pair 1</span><span>Pair 2</span><span>Pair 3</span><span>Pair 4</span></div></div>
+<div><h3>Why twist the wires?</h3><p>Twisting helps reduce:</p>
+<ul><li><strong>Electromagnetic interference (EMI)</strong></li><li><strong>Crosstalk</strong></li></ul>
+<div class="callout">The twists help protect signal quality.</div></div>
+</div>
+</div>
+        <div class="footer"><span>5 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="6">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>UTP vs STP</h1>
+<table><thead><tr><th>Feature</th><th>UTP</th><th>STP</th></tr></thead><tbody>
+<tr><td>Meaning</td><td>Unshielded Twisted Pair</td><td>Shielded Twisted Pair</td></tr>
+<tr><td>Extra shielding</td><td>No</td><td>Yes</td></tr>
+<tr><td>Cost</td><td>Lower</td><td>Higher</td></tr>
+<tr><td>Installation</td><td>Easier</td><td>Needs more care</td></tr>
+<tr><td>EMI protection</td><td>Moderate</td><td>Better</td></tr>
+<tr><td>Common use</td><td>Homes, schools, offices, labs</td><td>Electrically noisy environments</td></tr>
+</tbody></table>
+<div class="memory"><b>Memory trick:</b> U = Unshielded • S = Shielded</div>
+</div>
+        <div class="footer"><span>6 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="7">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Ethernet Cable Categories</h1>
+<table><thead><tr><th>Category</th><th>Common Capability</th><th>Typical Use</th></tr></thead><tbody>
+<tr><td>Cat5e</td><td>Up to 1 Gbps</td><td>Basic Ethernet LANs</td></tr>
+<tr><td>Cat6</td><td>1 Gbps; 10 Gbps over shorter runs</td><td>Modern LANs</td></tr>
+<tr><td>Cat6a</td><td>10 Gbps</td><td>Higher-performance networks</td></tr>
+<tr><td>Cat8</td><td>25–40 Gbps</td><td>Specialized short data-center links</td></tr>
+</tbody></table>
+<div class="callout">A higher cable category does <strong>not</strong> automatically make your Internet faster. The whole network matters.</div>
+</div>
+        <div class="footer"><span>7 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="8">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Coaxial Cable</h1>
+<div class="two"><div>
+<div class="layers"><div>Outer Jacket</div><div>Metal Shield</div><div>Insulator</div><div>Center Conductor</div></div>
+</div><div><p>A coaxial cable has a central conductor surrounded by insulation and shielding.</p>
+<h3>Common Uses</h3><ul><li>Cable television</li><li>Cable Internet</li><li>CCTV</li><li>Broadband systems</li></ul></div></div>
+</div>
+        <div class="footer"><span>8 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="9">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Fiber-Optic Cable</h1>
+<div class="two"><div><p>Fiber-optic cable carries information through <strong>light pulses</strong> instead of electrical signals.</p>
+<div class="fiber">💡 ✦ ✦ ✦ ✦ ✦ ➜ DATA</div></div>
+<div><h3>Advantages</h3><ul><li>Very high bandwidth</li><li>Long-distance transmission</li><li>Resistant to electromagnetic interference</li></ul>
+<h3>Limitations</h3><ul><li>Specialized tools and skills</li><li>Installation may cost more than basic copper</li></ul></div></div>
+</div>
+        <div class="footer"><span>9 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="10">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Single-Mode vs Multimode Fiber</h1>
+<table><thead><tr><th>Feature</th><th>Single-Mode</th><th>Multimode</th></tr></thead><tbody>
+<tr><td>Core</td><td>Smaller</td><td>Larger</td></tr>
+<tr><td>Distance</td><td>Longer</td><td>Shorter</td></tr>
+<tr><td>Common use</td><td>Long-distance, ISP, telecom</td><td>Buildings, campuses, data centers</td></tr>
+<tr><td>Light source</td><td>Usually laser</td><td>Usually LED/VCSEL</td></tr>
+</tbody></table>
+</div>
+        <div class="footer"><span>10 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="11">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Unguided or Wireless Media</h1>
+<p class="lead">Wireless networks send information through the air using <strong>electromagnetic waves</strong>.</p>
+<div class="wireless"><div>📱<small>Phone</small></div><b>))) ))) )))</b><div>📡<small>Wireless Router</small></div></div>
+<div class="three"><div class="card"><b>Radio Waves</b><span>Wi-Fi, Bluetooth, cellular</span></div>
+<div class="card"><b>Microwave</b><span>Point-to-point telecom links</span></div>
+<div class="card"><b>Satellite</b><span>Wide-area / remote communication</span></div></div>
+</div>
+        <div class="footer"><span>11 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="12">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Wired vs Wireless</h1>
+<table><thead><tr><th>Feature</th><th>Wired</th><th>Wireless</th></tr></thead><tbody>
+<tr><td>Medium</td><td>Physical cable</td><td>Air / space</td></tr>
+<tr><td>Mobility</td><td>Limited</td><td>High</td></tr>
+<tr><td>Interference</td><td>Generally lower</td><td>Can be higher</td></tr>
+<tr><td>Installation</td><td>Requires cabling</td><td>Convenient for mobile clients</td></tr>
+<tr><td>Performance</td><td>Often stable</td><td>Environment-dependent</td></tr>
+</tbody></table>
+<div class="question">For 30 fixed desktop computers in a laboratory, which would you prefer: Ethernet or Wi-Fi?</div>
+</div>
+        <div class="footer"><span>12 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="13">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Physical Transmission</h1>
+<div class="three">
+<div class="card"><div class="emoji">🔌</div><b>Copper</b><span>Electrical signals</span></div>
+<div class="card"><div class="emoji">💡</div><b>Fiber</b><span>Light signals</span></div>
+<div class="card"><div class="emoji">📶</div><b>Wireless</b><span>Radio / electromagnetic waves</span></div>
+</div>
+<p class="lead center">Digital data must be converted into a signal suitable for the transmission medium.</p>
+</div>
+        <div class="footer"><span>13 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="14">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Bandwidth</h1>
+<p class="lead"><strong>Bandwidth</strong> is the capacity of a communication channel.</p>
+<div class="road"><div><span>Small road</span><b>🚗 → 🚗</b></div><div class="wide"><span>Large highway</span><b>🚗 🚗 🚗 🚗 🚗 →</b></div></div>
+<p>Greater bandwidth allows more data to be transmitted per unit of time.</p>
+<div class="memory">Common units: <strong>Kbps • Mbps • Gbps</strong></div>
+</div>
+        <div class="footer"><span>14 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="15">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Attenuation</h1>
+<p class="lead"><strong>Attenuation</strong> means the signal becomes weaker as distance increases.</p>
+<div class="atten"><div class="s1">Strong</div><span>→ distance →</span><div class="s2">Medium</div><span>→</span><div class="s3">Weak</div></div>
+<div class="callout">Standard copper Ethernet commonly uses a maximum channel length of about <strong>100 meters</strong>.</div>
+</div>
+        <div class="footer"><span>15 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="16">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Crosstalk</h1>
+<div class="two"><div><p><strong>Crosstalk</strong> happens when signals from one wire interfere with another wire.</p>
+<div class="speech">🗣️ “Hello!” &nbsp;&nbsp;&nbsp; 🗣️ “Good morning!”</div></div>
+<div><p>It is similar to trying to listen to one conversation while another person is talking loudly beside you.</p>
+<div class="callout">Twisting wire pairs helps reduce crosstalk.</div></div></div>
+</div>
+        <div class="footer"><span>16 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="17">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Ethernet Cable Connections</h1>
+<div class="two"><div><p>To connect devices in a wired LAN, we commonly use twisted-pair Ethernet cable.</p>
+<div class="flow">PC → Switch → Router</div></div>
+<div><h3>Common Connector</h3><p><strong>8P8C modular connector</strong>, commonly called <strong>RJ45</strong>.</p>
+<div class="connector"><div>1 2 3 4 5 6 7 8</div><b>RJ45 / 8P8C</b></div></div></div>
+</div>
+        <div class="footer"><span>17 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="18">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Tools Used to Create an Ethernet Cable</h1>
+<div class="grid5">
+<div class="card"><div class="emoji">🧵</div><b>UTP Cable</b></div>
+<div class="card"><div class="emoji">🔌</div><b>RJ45 Connector</b></div>
+<div class="card"><div class="emoji">🛠️</div><b>Crimping Tool</b></div>
+<div class="card"><div class="emoji">✂️</div><b>Stripper / Cutter</b></div>
+<div class="card"><div class="emoji">✅</div><b>Cable Tester</b></div>
+</div>
+<div class="callout"><strong>Crimper:</strong> secures the connector. &nbsp; <strong>Tester:</strong> checks continuity and pin order.</div>
+</div>
+        <div class="footer"><span>18 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="19">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Ethernet Wire Colors</h1>
+<p>A standard four-pair Ethernet cable has <strong>8 conductors</strong> based on four color pairs.</p>
+<div class="pairs">
+<div><b>Orange Pair</b><span>White/Orange + Orange</span></div>
+<div><b>Green Pair</b><span>White/Green + Green</span></div>
+<div><b>Blue Pair</b><span>White/Blue + Blue</span></div>
+<div><b>Brown Pair</b><span>White/Brown + Brown</span></div>
+</div>
+<p class="center">The exact order depends on the selected wiring standard.</p>
+</div>
+        <div class="footer"><span>19 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="20">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>T568A and T568B</h1>
+<p class="lead">The two important Ethernet wiring standards are:</p>
+<div class="standards"><div><span>A</span><b>T568A</b></div><div><span>B</span><b>T568B</b></div></div>
+<div class="callout">The orange and green pairs switch positions. Blue and brown remain in the same pin positions.</div>
+</div>
+        <div class="footer"><span>20 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="21">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>T568A Color Order</h1>
+<table><thead><tr><th>Pin</th><th>Color</th></tr></thead><tbody>
+<tr><td>1</td><td>White/Green</td></tr><tr><td>2</td><td>Green</td></tr>
+<tr><td>3</td><td>White/Orange</td></tr><tr><td>4</td><td>Blue</td></tr>
+<tr><td>5</td><td>White/Blue</td></tr><tr><td>6</td><td>Orange</td></tr>
+<tr><td>7</td><td>White/Brown</td></tr><tr><td>8</td><td>Brown</td></tr>
+</tbody></table>
+<div class="memory"><strong>T568A:</strong> WG – G – WO – B – WB – O – WBr – Br</div>
+</div>
+        <div class="footer"><span>21 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="22">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>T568B Color Order</h1>
+<table><thead><tr><th>Pin</th><th>Color</th></tr></thead><tbody>
+<tr><td>1</td><td>White/Orange</td></tr><tr><td>2</td><td>Orange</td></tr>
+<tr><td>3</td><td>White/Green</td></tr><tr><td>4</td><td>Blue</td></tr>
+<tr><td>5</td><td>White/Blue</td></tr><tr><td>6</td><td>Green</td></tr>
+<tr><td>7</td><td>White/Brown</td></tr><tr><td>8</td><td>Brown</td></tr>
+</tbody></table>
+<div class="memory"><strong>T568B:</strong> WO – O – WG – B – WB – G – WBr – Br</div>
+</div>
+        <div class="footer"><span>22 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="23">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Straight-Through Cable</h1>
+<div class="cablemap"><div>T568B</div><span></span><div>T568B</div></div>
+<p>A <strong>straight-through cable</strong> uses the <strong>same wiring standard on both ends</strong>.</p>
+<div class="two"><div class="panel"><b>T568A → T568A</b></div><div class="panel"><b>T568B → T568B</b></div></div>
+<div class="memory"><strong>Easy rule:</strong> Same standard on both ends = Straight-through</div>
+</div>
+        <div class="footer"><span>23 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="24">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Traditional Straight-Through Uses</h1>
+<p>Traditionally, straight-through cables connect <strong>different types of network devices</strong>.</p>
+<div class="links"><div>💻 PC ─────── 🔀 Switch</div><div>📡 Router ───── 🔀 Switch</div><div>💻 PC ─────── 🔗 Hub</div></div>
+<div class="callout">Modern equipment may automatically adapt, but the traditional rule is still important for learning cabling.</div>
+</div>
+        <div class="footer"><span>24 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="25">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Crossover Cable</h1>
+<div class="cablemap"><div>T568A</div><span class="cross"></span><div>T568B</div></div>
+<p>A <strong>crossover cable</strong> uses <strong>different wiring standards</strong> on each end.</p>
+<div class="links"><div>💻 PC ─────── 💻 PC</div><div>🔀 Switch ───── 🔀 Switch</div><div>🔗 Hub ─────── 🔗 Hub</div></div>
+<div class="memory"><strong>Easy rule:</strong> A on one end + B on the other = Crossover</div>
+</div>
+        <div class="footer"><span>25 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="26">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Modern Networking Note: Auto-MDI/MDIX</h1>
+<p class="lead">Many modern Ethernet devices support <strong>Auto-MDI/MDIX</strong>.</p>
+<div class="two"><div class="panel"><h3>Older Equipment</h3><p>Cable type often had to match the traditional device-pairing rule.</p></div>
+<div class="panel"><h3>Modern Equipment</h3><p>The device may automatically adjust transmit and receive pairs.</p></div></div>
+<div class="callout">You should still know both cable types because wiring standards remain fundamental networking skills.</div>
+</div>
+        <div class="footer"><span>26 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="27">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Straight-Through vs Crossover</h1>
+<table><thead><tr><th>Cable</th><th>End A</th><th>End B</th><th>Traditional Use</th></tr></thead><tbody>
+<tr><td>Straight-through</td><td>T568A</td><td>T568A</td><td>Different device types</td></tr>
+<tr><td>Straight-through</td><td>T568B</td><td>T568B</td><td>Different device types</td></tr>
+<tr><td>Crossover</td><td>T568A</td><td>T568B</td><td>Similar device types</td></tr>
+</tbody></table>
+<div class="memory"><b>STRAIGHT:</b> Same → Same &nbsp;&nbsp; • &nbsp;&nbsp; <b>CROSSOVER:</b> Different → Different</div>
+</div>
+        <div class="footer"><span>27 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="28">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>How to Create an Ethernet Cable</h1>
+<div class="steps">
+<div><span>1</span><b>Measure</b><small>Choose the required length.</small></div>
+<div><span>2</span><b>Cut</b><small>Make a clean cut.</small></div>
+<div><span>3</span><b>Strip</b><small>Remove the outer jacket.</small></div>
+<div><span>4</span><b>Arrange</b><small>Use T568A or T568B order.</small></div>
+<div><span>5</span><b>Trim</b><small>Make the wire ends even.</small></div>
+<div><span>6</span><b>Insert</b><small>Push all 8 wires inside.</small></div>
+<div><span>7</span><b>Crimp</b><small>Secure the connector.</small></div>
+<div><span>8</span><b>Test</b><small>Check the cable.</small></div>
+</div>
+</div>
+        <div class="footer"><span>28 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="29">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Step 1–3: Measure, Cut, and Strip</h1>
+<div class="three">
+<div class="card"><b>1. Measure</b><span>Leave a little extra length rather than making the cable too short.</span></div>
+<div class="card"><b>2. Cut</b><span>Use the cable cutter and make a clean cut.</span></div>
+<div class="card"><b>3. Strip</b><span>Remove a few centimeters of jacket without damaging conductors.</span></div>
+</div>
+<div class="callout">After stripping, you should see four twisted pairs — eight conductors total.</div>
+</div>
+        <div class="footer"><span>29 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="30">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Step 4: Arrange the Wires</h1>
+<p>Separate the four pairs and place the wires in the required standard.</p>
+<div class="wiring">
+<div>1<br><b>White/Orange</b></div><div>2<br><b>Orange</b></div><div>3<br><b>White/Green</b></div><div>4<br><b>Blue</b></div>
+<div>5<br><b>White/Blue</b></div><div>6<br><b>Green</b></div><div>7<br><b>White/Brown</b></div><div>8<br><b>Brown</b></div>
+</div>
+<div class="memory">Example shown: <strong>T568B</strong>. Keep the untwisted section as short as practical.</div>
+</div>
+        <div class="footer"><span>30 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="31">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Step 5–6: Straighten, Trim, Insert</h1>
+<div class="two"><div><h3>Straighten & Trim</h3><p>Hold the conductors in the correct order and trim the ends evenly.</p><div class="ascii">||||||||</div></div>
+<div><h3>Insert</h3><ul><li>All wires should reach the end.</li><li>The color order must stay correct.</li><li>The jacket should be secured by the connector.</li></ul></div></div>
+<div class="warning">⚠️ Check the color order again <strong>before crimping</strong>.</div>
+</div>
+        <div class="footer"><span>31 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="32">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Step 7: Crimp the Connector</h1>
+<div class="center"><div class="emoji giant">🛠️</div>
+<h3>Insert the connector into the crimping tool and squeeze firmly.</h3>
+<p>The metal contacts are pressed into the conductors and the connector is secured to the cable.</p></div>
+</div>
+        <div class="footer"><span>32 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="33">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Step 8: Repeat for the Other End</h1>
+<div class="two"><div class="panel"><h3>Straight-Through</h3><div class="cablemap small"><div>T568B</div><span></span><div>T568B</div></div><p>Same standard on both ends.</p></div>
+<div class="panel"><h3>Crossover</h3><div class="cablemap small"><div>T568A</div><span class="cross"></span><div>T568B</div></div><p>Different standard on each end.</p></div></div>
+</div>
+        <div class="footer"><span>33 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="34">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Test the Cable</h1>
+<p class="lead">Never assume that a cable works just because it looks correct.</p>
+<div class="tester"><div><b>MAIN</b><br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div>
+<div class="tlines">────────<br>────────<br>────────<br>────────<br>────────<br>────────<br>────────<br>────────</div>
+<div><b>REMOTE</b><br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div></div>
+<div class="callout">A correctly wired straight-through cable shows matching pin continuity: 1→1, 2→2, …, 8→8.</div>
+</div>
+        <div class="footer"><span>34 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="35">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Common Cabling Problems</h1>
+<div class="problems">
+<div class="card"><b>Wrong Color Order</b><span>Wires are connected to the wrong pins.</span></div>
+<div class="card"><b>Wire Does Not Reach Contact</b><span>Can cause no or intermittent connection.</span></div>
+<div class="card"><b>Damaged Conductor</b><span>May happen during stripping or cutting.</span></div>
+<div class="card"><b>Excessive Untwisting</b><span>May increase crosstalk.</span></div>
+<div class="card"><b>Poor Crimp</b><span>May cause unreliable electrical contact.</span></div>
+</div>
+</div>
+        <div class="footer"><span>35 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="36">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Troubleshooting Activity</h1>
+<div class="tester mini"><div><b>MAIN</b><br>1<br>2<br>3<br>4<br>5<br><span class="bad">6</span><br>7<br>8</div>
+<div class="tlines">→1<br>→2<br>→3<br>→4<br>→5<br><span class="bad">→ X</span><br>→7<br>→8</div></div>
+<div class="question">What might be wrong with Pin 6?</div>
+<p><b>Possible causes:</b> wire 6 did not reach the contact, the conductor is damaged, the connector was poorly crimped, or the wire is incorrectly positioned.</p>
+</div>
+        <div class="footer"><span>36 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="37">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Choosing the Appropriate Network Media</h1>
+<div class="scenarios">
+<div class="card"><b>School Computer Lab</b><span>40 desktop PCs</span><strong>Cat6 UTP Ethernet</strong></div>
+<div class="card"><b>Building-to-Building Link</b><span>High speed + electrical isolation</span><strong>Fiber Optic</strong></div>
+<div class="card"><b>Student Smartphones</b><span>Mobility is important</span><strong>Wi-Fi</strong></div>
+<div class="card"><b>Industrial Area</b><span>High EMI</span><strong>Shielded Copper or Fiber</strong></div>
+</div>
+</div>
+        <div class="footer"><span>37 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="38">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Network Media Comparison</h1>
+<table class="smalltable"><thead><tr><th>Media</th><th>Signal</th><th>Capacity</th><th>Distance</th><th>EMI Resistance</th><th>Typical Use</th></tr></thead><tbody>
+<tr><td>UTP</td><td>Electrical</td><td>High</td><td>LAN</td><td>Moderate</td><td>LAN</td></tr>
+<tr><td>STP</td><td>Electrical</td><td>High</td><td>LAN</td><td>Better</td><td>Noisy areas</td></tr>
+<tr><td>Coaxial</td><td>Electrical</td><td>Varies</td><td>Varies</td><td>Good</td><td>Broadband/CCTV</td></tr>
+<tr><td>Fiber</td><td>Light</td><td>Very high</td><td>Long</td><td>Excellent</td><td>Backbone/ISP</td></tr>
+<tr><td>Wireless</td><td>Radio</td><td>Varies</td><td>Technology-dependent</td><td>RF-sensitive</td><td>Mobile access</td></tr>
+</tbody></table>
+</div>
+        <div class="footer"><span>38 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="39">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Interactive Activity: Choose Your Media</h1>
+<div class="qa">
+<div><b>A.</b> 30 desktop computers in one lab.<span>Expected: Cat6 UTP Ethernet</span></div>
+<div><b>B.</b> Connect distant campus buildings.<span>Expected: Fiber optic</span></div>
+<div><b>C.</b> Network access for students' phones.<span>Expected: Wi-Fi</span></div>
+<div><b>D.</b> High electromagnetic interference environment.<span>Expected: Shielded cabling or fiber</span></div>
+</div>
+<div class="teacher">Teacher prompt: “You are the network engineer. Which medium would you choose, and why?”</div>
+</div>
+        <div class="footer"><span>39 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="40">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Interactive Activity: What Cable Am I?</h1>
+<div class="qa">
+<div>“Same wiring standard on both ends.”<span><b>STRAIGHT-THROUGH</b></span></div>
+<div>“T568A on one end, T568B on the other.”<span><b>CROSSOVER</b></span></div>
+<div>“I transmit information using light.”<span><b>FIBER OPTIC</b></span></div>
+<div>“I contain four twisted pairs.”<span><b>TWISTED PAIR</b></span></div>
+<div>“I transmit data through the air.”<span><b>WIRELESS MEDIA</b></span></div>
+</div>
+</div>
+        <div class="footer"><span>40 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="41">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Laboratory Activity: Ethernet Cable Creation</h1>
+<div class="two"><div><h3>Objective</h3><p>Create and test Ethernet cables using correct wiring standards.</p>
+<h3>Materials</h3><ul><li>UTP cable</li><li>RJ45 connectors</li><li>Crimping tool</li><li>Stripper / cutter</li><li>Cable tester</li></ul></div>
+<div><h3>Task 1</h3><p>Straight-through: <strong>T568B → T568B</strong></p>
+<h3>Task 2</h3><p>Crossover: <strong>T568A → T568B</strong></p>
+<h3>Task 3</h3><p>Test and record whether each cable passes or fails.</p></div></div>
+</div>
+        <div class="footer"><span>41 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="42">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Laboratory Record Sheet</h1>
+<div class="record">
+<p><b>Cable Type:</b> ______________________________</p>
+<p><b>End A Standard:</b> _________________________</p>
+<p><b>End B Standard:</b> _________________________</p>
+<p><b>Tester Result:</b> &nbsp; PASS &nbsp; / &nbsp; FAIL</p>
+<p><b>If FAIL, identified problem:</b></p><div class="blank"></div>
+</div>
+</div>
+        <div class="footer"><span>42 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="43">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Lab Safety and Good Practices</h1>
+<ul class="big-list">
+<li>Handle cutters carefully and keep fingers away from blades.</li>
+<li>Do not use damaged tools.</li>
+<li>Check wire arrangement before crimping.</li>
+<li>Avoid excessive cable bending.</li>
+<li>Keep pairs twisted as close to the termination as practical.</li>
+<li>Test every completed cable.</li>
+<li>Keep the work area clean.</li>
+</ul>
+</div>
+        <div class="footer"><span>43 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="44">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Quick Knowledge Check</h1>
+<div class="two"><ol>
+<li>What is network media?</li><li>What are the two main categories?</li><li>Name three wired media.</li>
+<li>How many conductors are in Ethernet twisted-pair cabling?</li><li>What connector is commonly called RJ45?</li></ol>
+<ol start="6"><li>What are the two wiring standards?</li><li>What makes a cable straight-through?</li>
+<li>What makes a cable crossover?</li><li>What device checks cable wiring?</li><li>What medium transmits data using light?</li></ol></div>
+</div>
+        <div class="footer"><span>44 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="45">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Knowledge Check — Answers</h1>
+<div class="answers">
+<div><b>1</b><span>Pathway used to carry network signals.</span></div>
+<div><b>2</b><span>Guided and unguided.</span></div>
+<div><b>3</b><span>Twisted pair, coaxial, fiber optic.</span></div>
+<div><b>4</b><span>8 conductors / 4 pairs.</span></div>
+<div><b>5</b><span>8P8C modular connector.</span></div>
+<div><b>6</b><span>T568A and T568B.</span></div>
+<div><b>7</b><span>Same standard on both ends.</span></div>
+<div><b>8</b><span>T568A on one end and T568B on the other.</span></div>
+<div><b>9</b><span>Network cable tester.</span></div>
+<div><b>10</b><span>Fiber optic.</span></div>
+</div>
+</div>
+        <div class="footer"><span>45 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="46">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Remember These Core Concepts</h1>
+<div class="three">
+<div class="panel"><h3>Network Media</h3><p><b>Wired:</b> Twisted Pair, Coaxial, Fiber</p><p><b>Wireless:</b> Wi-Fi/Radio, Microwave, Satellite</p></div>
+<div class="panel"><h3>Wiring</h3><p><b>T568A:</b><br>WG-G-WO-B-WB-O-WBr-Br</p><p><b>T568B:</b><br>WO-O-WG-B-WB-G-WBr-Br</p></div>
+<div class="panel"><h3>Cable Types</h3><p><b>Straight:</b> A-A or B-B</p><p><b>Crossover:</b> A-B</p></div>
+</div>
+<div class="memory center">Copper → Electrical &nbsp; | &nbsp; Fiber → Light &nbsp; | &nbsp; Wireless → Radio Waves</div>
+</div>
+        <div class="footer"><span>46 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide " data-slide="47">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>Lesson Summary</h1>
+<p class="lead">Network media provide the pathway through which data travels.</p>
+<ul class="big-list">
+<li><strong>Guided media:</strong> twisted pair, coaxial, and fiber optic.</li>
+<li><strong>Unguided media:</strong> wireless signals through air or space.</li>
+<li><strong>T568A and T568B</strong> define Ethernet conductor order.</li>
+<li><strong>Straight-through:</strong> same standard on both ends.</li>
+<li><strong>Crossover:</strong> T568A on one end and T568B on the other.</li>
+<li>A networking student should be able to <strong>prepare, terminate, crimp, test, and troubleshoot</strong> Ethernet cables.</li>
+</ul>
+</div>
+        <div class="footer"><span>47 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<section class="slide title-slide" data-slide="48">
+        <div class="topline"><span>Networking and Communication 1</span><span>Midterm • Lesson 2</span></div>
+        <div class="content"><h1>End of Lesson</h1>
+<div class="center">
+<div class="emoji giant">🌐</div>
+<h2>Network Media & Physical Transmission</h2>
+<p class="lead">Next: Apply the concepts through cable-making and testing.</p>
+<div class="memory">Questions?</div>
+</div>
+</div>
+        <div class="footer"><span>48 / 48</span><span>← → Navigate • F Fullscreen • Home/End</span></div>
+        </section>
+<script>
+
+const slides=[...document.querySelectorAll('.slide')];
+let index=0;
+function show(i){
+  index=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,n)=>s.classList.toggle('active',n===index));
+  history.replaceState(null,'','#slide-'+(index+1));
+}
+function next(){show(index+1)}
+function prev(){show(index-1)}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev()}
+  if(e.key==='Home')show(0);
+  if(e.key==='End')show(slides.length-1);
+  if(e.key.toLowerCase()==='f'){
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+document.addEventListener('click',e=>{ if(e.clientX>innerWidth*.55) next(); else prev(); });
+const m=location.hash.match(/slide-(\d+)/); show(m?parseInt(m[1])-1:0);
+
+</script>
+</body>
+</html>
