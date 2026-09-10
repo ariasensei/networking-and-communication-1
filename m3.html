@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Network Media and Physical Transmission - HTML Slide Deck</title>
+<style>
+  :root{
+    --bg:#07111f;
+    --panel:#0e1c31;
+    --accent:#39d7ff;
+    --accent2:#7cffc4;
+    --text:#f3f8ff;
+    --muted:#b9c7d8;
+    --warn:#ffd166;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow:hidden;
+  }
+  .slide{
+    display:none;
+    width:100vw;
+    height:100vh;
+    padding:54px 72px 78px;
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 85% 12%, rgba(57,215,255,.18), transparent 32%),
+      radial-gradient(circle at 8% 85%, rgba(124,255,196,.12), transparent 35%),
+      linear-gradient(135deg,#07111f 0%,#0b1b31 52%,#06101c 100%);
+  }
+  .slide.active{display:flex;flex-direction:column;}
+  h1{font-size:58px;line-height:1.05;margin:0 0 20px;font-weight:800;}
+  h2{font-size:42px;line-height:1.08;margin:0 0 24px;font-weight:800;color:var(--accent);}
+  h3{font-size:30px;margin:0 0 14px;color:var(--accent2);}
+  p,li{font-size:24px;line-height:1.38;color:var(--text);}
+  ul,ol{margin-top:8px;padding-left:34px;}
+  .subtitle{font-size:30px;color:var(--muted);margin-top:10px;}
+  .tag{display:inline-block;background:rgba(57,215,255,.15);border:1px solid rgba(57,215,255,.5);border-radius:999px;padding:8px 16px;font-size:20px;margin:6px 8px 6px 0;}
+  .grid{display:grid;gap:22px;}
+  .cols2{grid-template-columns:1fr 1fr;}
+  .cols3{grid-template-columns:repeat(3,1fr);}
+  .card{background:rgba(14,28,49,.78);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:24px;box-shadow:0 12px 30px rgba(0,0,0,.18);}
+  .big{font-size:30px;line-height:1.35;}
+  .small{font-size:20px;color:var(--muted);}
+  .diagram{font-size:28px;text-align:center;line-height:1.8;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.35);border-radius:24px;padding:26px;margin-top:18px;}
+  table{width:100%;border-collapse:collapse;font-size:21px;background:rgba(14,28,49,.8);border-radius:18px;overflow:hidden;}
+  th,td{border:1px solid rgba(255,255,255,.14);padding:14px;vertical-align:top;}
+  th{background:rgba(57,215,255,.18);color:#e9fbff;font-size:22px;}
+  .footer{position:absolute;left:72px;right:72px;bottom:30px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:18px;}
+  .progress{height:6px;width:260px;background:rgba(255,255,255,.12);border-radius:20px;overflow:hidden;}
+  .bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;}
+  .nav{position:fixed;right:22px;bottom:18px;z-index:20;display:flex;gap:10px;}
+  button{background:#14365a;color:white;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 14px;font-size:16px;cursor:pointer;}
+  .highlight{color:var(--warn);font-weight:800;}
+  .center{justify-content:center;text-align:center;}
+  .quote{font-size:34px;line-height:1.35;background:rgba(255,255,255,.08);border-left:7px solid var(--accent2);padding:25px;border-radius:18px;}
+  @media print{
+    body{overflow:visible;background:white;}
+    .slide{display:flex!important;position:relative;page-break-after:always;width:100vw;height:100vh;}
+    .nav{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<section class="slide active center">
+  <h1>Network Media and Physical Transmission</h1>
+  <p class="subtitle">Networking and Communication 1</p>
+  <p class="subtitle">College Lecture Slide Deck</p>
+  <div>
+    <span class="tag">OSI Layer 1</span><span class="tag">Wired Media</span><span class="tag">Wireless Media</span>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Learning Outcomes</h2>
+  <ul>
+    <li>Define network media and physical transmission.</li>
+    <li>Explain how data physically travels between devices.</li>
+    <li>Differentiate guided/wired and unguided/wireless media.</li>
+    <li>Compare media using speed, distance, cost, interference, security, and practical use.</li>
+    <li>Select appropriate network media for real-world scenarios.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Big Idea</h2>
+  <p class="big">When you download a file, data may pass through different types of media before reaching your device.</p>
+  <div class="diagram">Laptop → Wi-Fi → Access Point → Ethernet Cable → Switch → Fiber → ISP → Internet Server</div>
+  <p class="quote">Data needs a physical or wireless path to travel.</p>
+</section>
+
+<section class="slide">
+  <h2>What Is Network Media?</h2>
+  <p class="big"><b>Network media</b> is the physical or wireless channel used to carry data signals between devices.</p>
+  <div class="grid cols2">
+    <div class="card"><h3>Data</h3><p>The vehicle</p></div>
+    <div class="card"><h3>Network Medium</h3><p>The road used by the vehicle</p></div>
+  </div>
+  <p>Examples: Ethernet cable, coaxial cable, fiber optic cable, Wi-Fi, cellular, microwave, satellite.</p>
+</section>
+
+<section class="slide">
+  <h2>Two Main Types of Media</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>Guided Media</h3><p>Signals travel through a physical path.</p><p><span class="highlight">Examples:</span> UTP cable, coaxial cable, fiber optic cable.</p></div>
+    <div class="card"><h3>Unguided Media</h3><p>Signals travel through air or space.</p><p><span class="highlight">Examples:</span> Wi-Fi, Bluetooth, cellular, microwave, satellite.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>What Is Physical Transmission?</h2>
+  <p class="big">Physical transmission is the actual movement of data signals through a transmission medium.</p>
+  <table>
+    <tr><th>Medium</th><th>Signal Used</th></tr>
+    <tr><td>Copper cable</td><td>Electrical signals</td></tr>
+    <tr><td>Fiber optic cable</td><td>Light pulses</td></tr>
+    <tr><td>Wi-Fi / Cellular</td><td>Radio waves</td></tr>
+    <tr><td>Satellite</td><td>Radio or microwave signals</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>Bits Become Signals</h2>
+  <p>Computers use binary data: <span class="highlight">0 and 1</span>.</p>
+  <div class="grid cols3">
+    <div class="card"><h3>Copper</h3><p>Bits are represented by electrical signaling.</p></div>
+    <div class="card"><h3>Fiber</h3><p>Bits are represented by light pulses.</p></div>
+    <div class="card"><h3>Wireless</h3><p>Bits are encoded onto radio waves.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Guided Media: Wired Transmission</h2>
+  <div class="grid cols3">
+    <div class="card"><h3>Twisted Pair</h3><p>Common LAN cable.</p></div>
+    <div class="card"><h3>Coaxial</h3><p>Used in cable Internet, CCTV, RF systems.</p></div>
+    <div class="card"><h3>Fiber Optic</h3><p>Uses light for high-speed and long-distance links.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Twisted-Pair Cable</h2>
+  <p>Twisted-pair cable contains pairs of copper wires twisted together.</p>
+  <p>The twisting helps reduce <span class="highlight">electromagnetic interference</span> and <span class="highlight">crosstalk</span>.</p>
+  <div class="diagram">PC → UTP Ethernet Cable → Switch</div>
+  <p><b>Real-world example:</b> University computer laboratory with 30–40 desktop computers.</p>
+</section>
+
+<section class="slide">
+  <h2>UTP and Shielded Twisted Pair</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>UTP</h3><p>Unshielded Twisted Pair</p><ul><li>Affordable</li><li>Easy to install</li><li>Common in offices and schools</li></ul></div>
+    <div class="card"><h3>Shielded Twisted Pair</h3><p>Has extra shielding against interference.</p><ul><li>Useful near electrical equipment</li><li>Needs proper installation</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Ethernet Cable Categories</h2>
+  <table>
+    <tr><th>Cable</th><th>Typical Networking Use</th></tr>
+    <tr><td>Cat5e</td><td>Gigabit Ethernet LANs</td></tr>
+    <tr><td>Cat6</td><td>Gigabit Ethernet; higher speeds over shorter distances</td></tr>
+    <tr><td>Cat6A</td><td>Common for 10 Gigabit Ethernet</td></tr>
+    <tr><td>Cat7</td><td>Specialized/proprietary shielded contexts</td></tr>
+    <tr><td>Cat8</td><td>High-speed short-distance data center use</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>RJ45 / 8P8C Ethernet Connector</h2>
+  <p>Ethernet patch cables commonly use what people call an <span class="highlight">RJ45 connector</span>.</p>
+  <p>More precisely, many Ethernet patch cables use an <span class="highlight">8P8C modular connector</span>.</p>
+  <div class="diagram">PC NIC → Ethernet Cable → Wall Jack → Patch Panel → Switch</div>
+</section>
+
+<section class="slide">
+  <h2>Coaxial Cable</h2>
+  <p>A coaxial cable has a center conductor, insulation, shielding, and an outer jacket.</p>
+  <div class="diagram">Center Conductor → Insulator → Metallic Shield → Outer Jacket</div>
+  <p><b>Common uses:</b> cable television, cable Internet, CCTV, and RF systems.</p>
+</section>
+
+<section class="slide">
+  <h2>Fiber-Optic Cable</h2>
+  <p>Fiber-optic cable carries information using <span class="highlight">light</span>.</p>
+  <div class="diagram">Core → Cladding → Protective Layers → Outer Jacket</div>
+  <p>The core carries light, while the cladding helps keep light inside the core.</p>
+</section>
+
+<section class="slide">
+  <h2>Why Use Fiber?</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>High Capacity</h3><p>Supports very high data rates.</p></div>
+    <div class="card"><h3>Long Distance</h3><p>Excellent for backbone and inter-building links.</p></div>
+    <div class="card"><h3>EMI Resistance</h3><p>Not affected by electromagnetic interference like copper.</p></div>
+    <div class="card"><h3>Security Advantage</h3><p>Does not radiate signals like copper, but still needs protection.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Single-Mode vs Multimode Fiber</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>Single-Mode Fiber</h3><p>Used for longer distances, telecom networks, ISP links, and campus backbones.</p></div>
+    <div class="card"><h3>Multimode Fiber</h3><p>Used for shorter links in buildings, campuses, and data centers.</p></div>
+  </div>
+  <p class="quote">Single Mode = longer distance. Multimode = shorter-distance high-speed links.</p>
+</section>
+
+<section class="slide">
+  <h2>Campus Network Example</h2>
+  <p>Inside a building, computers may use Ethernet. Between buildings, the campus may use fiber.</p>
+  <div class="diagram">Building A Switch → Fiber → Building B Switch → Fiber → Building C Switch</div>
+</section>
+
+<section class="slide">
+  <h2>Unguided Media: Wireless Transmission</h2>
+  <div class="grid cols3">
+    <div class="card"><h3>Wi-Fi</h3><p>Wireless LAN access</p></div>
+    <div class="card"><h3>Bluetooth</h3><p>Short-range device connection</p></div>
+    <div class="card"><h3>Cellular</h3><p>Mobile network access</p></div>
+    <div class="card"><h3>Microwave</h3><p>Point-to-point links</p></div>
+    <div class="card"><h3>Satellite</h3><p>Remote connectivity</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Wi-Fi</h2>
+  <table>
+    <tr><th>Band</th><th>General Characteristics</th></tr>
+    <tr><td>2.4 GHz</td><td>Longer practical coverage, more interference</td></tr>
+    <tr><td>5 GHz</td><td>Higher potential performance, shorter practical coverage</td></tr>
+    <tr><td>6 GHz</td><td>Newer Wi-Fi technologies, more spectrum, limited range/penetration</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>Real-World Wi-Fi Problem</h2>
+  <p>A classroom has one access point. Students nearby have strong signal. Students several rooms away experience slow Internet.</p>
+  <div class="grid cols2">
+    <div class="card"><h3>Possible Causes</h3><ul><li>Distance</li><li>Concrete walls</li><li>Metal structures</li><li>Channel congestion</li></ul></div>
+    <div class="card"><h3>Other Causes</h3><ul><li>Too many users</li><li>Poor AP placement</li><li>Interference</li><li>Weak equipment</li></ul></div>
+  </div>
+</section>
+
+<section class="slide center">
+  <h2>Important Wi-Fi Lesson</h2>
+  <p class="quote">Having Wi-Fi does not automatically mean having good Wi-Fi.</p>
+  <p class="big">Wireless network design matters.</p>
+</section>
+
+<section class="slide">
+  <h2>Bluetooth and Cellular</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>Bluetooth</h3><p>Short-range personal device communication.</p><p>Example: phone to earbuds, laptop to mouse.</p></div>
+    <div class="card"><h3>Cellular</h3><p>Mobile network communication.</p><p>Example: smartphone → cell site → mobile operator → Internet.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Microwave and Satellite</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>Microwave</h3><p>Point-to-point wireless links, often needing line of sight.</p><div class="diagram">Building A 📡 ~~~~~ 📡 Building B</div></div>
+    <div class="card"><h3>Satellite</h3><p>Useful for remote areas, ships, aircraft, disaster areas, and isolated facilities.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>How Do We Evaluate Network Media?</h2>
+  <div class="grid cols3">
+    <div class="card"><h3>Bandwidth</h3><p>Capacity of the link.</p></div>
+    <div class="card"><h3>Throughput</h3><p>Actual useful data transferred.</p></div>
+    <div class="card"><h3>Latency</h3><p>Delay in data travel.</p></div>
+    <div class="card"><h3>Distance</h3><p>How far signal can travel.</p></div>
+    <div class="card"><h3>Interference</h3><p>How easily signal is disturbed.</p></div>
+    <div class="card"><h3>Cost</h3><p>Equipment and installation expense.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Bandwidth vs Throughput</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>Bandwidth</h3><p>The maximum capacity. Like road lanes.</p></div>
+    <div class="card"><h3>Throughput</h3><p>The actual achieved data rate. Like actual traffic movement.</p></div>
+  </div>
+  <p class="quote">A 1 Gbps link may deliver less actual throughput because of overhead, congestion, interference, or device limits.</p>
+</section>
+
+<section class="slide">
+  <h2>Latency</h2>
+  <p>Latency is the delay for data to travel from one point to another.</p>
+  <p>Low latency is important for online gaming, video conferencing, voice calls, and real-time applications.</p>
+</section>
+
+<section class="slide">
+  <h2>Attenuation</h2>
+  <p class="big">Attenuation means the signal becomes weaker as it travels.</p>
+  <div class="diagram">Strong Signal → Medium Signal → Weak Signal</div>
+  <p>That is why cables and wireless links have distance limitations.</p>
+</section>
+
+<section class="slide">
+  <h2>EMI, Crosstalk, and Noise</h2>
+  <div class="grid cols3">
+    <div class="card"><h3>EMI</h3><p>Interference from electrical devices.</p></div>
+    <div class="card"><h3>Crosstalk</h3><p>One channel affects another channel.</p></div>
+    <div class="card"><h3>Noise</h3><p>Unwanted signal energy.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Duplex Communication</h2>
+  <table>
+    <tr><th>Type</th><th>Meaning</th><th>Example</th></tr>
+    <tr><td>Simplex</td><td>One direction only</td><td>A → B</td></tr>
+    <tr><td>Half-Duplex</td><td>Both directions, not at the same time</td><td>Walkie-talkie</td></tr>
+    <tr><td>Full-Duplex</td><td>Send and receive at the same time</td><td>Modern switched Ethernet</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>Wired vs Wireless</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>Wired</h3><ul><li>Stable</li><li>Predictable</li><li>High capacity</li><li>Less RF interference</li></ul></div>
+    <div class="card"><h3>Wireless</h3><ul><li>Mobile</li><li>Convenient</li><li>Flexible</li><li>Performance can vary</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Scenario Examples</h2>
+  <table>
+    <tr><th>Situation</th><th>Suggested Medium</th><th>Reason</th></tr>
+    <tr><td>Computer Laboratory</td><td>Ethernet</td><td>Reliable for fixed PCs</td></tr>
+    <tr><td>Campus Buildings</td><td>Fiber</td><td>Longer distance and high bandwidth</td></tr>
+    <tr><td>Coffee Shop</td><td>Wi-Fi</td><td>Customer mobility</td></tr>
+    <tr><td>Remote Island</td><td>Microwave/Satellite</td><td>When fiber is unavailable or expensive</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>One Network Can Use Many Media</h2>
+  <div class="diagram">Phone → Wi-Fi → Access Point → Ethernet → Switch → Fiber → Campus Core → ISP → Internet Server</div>
+  <p>Modern networks are usually combinations of wireless, copper, and fiber technologies.</p>
+</section>
+
+<section class="slide">
+  <h2>Troubleshooting Physical Transmission</h2>
+  <div class="grid cols2">
+    <div class="card"><h3>Wired Checks</h3><ul><li>Loose cable</li><li>Damaged connector</li><li>Wrong port</li><li>Faulty switch port</li></ul></div>
+    <div class="card"><h3>Wireless Checks</h3><ul><li>Wi-Fi enabled?</li><li>Correct SSID?</li><li>Weak signal?</li><li>Too many clients?</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>OSI Model Connection</h2>
+  <p>Network media primarily operates at:</p>
+  <h1 style="color:var(--accent2);font-size:54px">Layer 1 — Physical Layer</h1>
+  <p class="quote">Layer 1 asks: How can the bits physically get from here to there?</p>
+</section>
+
+<section class="slide">
+  <h2>Individual Activity</h2>
+  <h3>You Are the Network Technician</h3>
+  <p><b>Time:</b> 25–30 minutes</p>
+  <p><b>Instructions:</b> For each scenario, choose the most appropriate medium and explain why.</p>
+  <p><b>Choices:</b> UTP/Ethernet, Fiber Optic, Wi-Fi, Coaxial, Microwave, Satellite</p>
+</section>
+
+<section class="slide">
+  <h2>Individual Activity Scenarios</h2>
+  <ol>
+    <li>University computer laboratory with 35 desktop computers.</li>
+    <li>Two university buildings located 400 meters apart.</li>
+    <li>Restaurant customers need Internet on phones and laptops.</li>
+    <li>Small remote island where underwater fiber is too expensive.</li>
+    <li>Large facility with high interference and high-capacity backbone needs.</li>
+  </ol>
+</section>
+
+<section class="slide">
+  <h2>Individual Activity Final Question</h2>
+  <p>Draw this network and label where you would use Ethernet, Wi-Fi, and Fiber:</p>
+  <div class="diagram">Computer Laboratory → Building Network → Campus Backbone → ISP → Internet</div>
+  <p>Why should a network engineer understand the strengths and weaknesses of different transmission media?</p>
+</section>
+
+<section class="slide">
+  <h2>Group Activity</h2>
+  <h3>Design the Network</h3>
+  <p><b>Group Size:</b> 4–5 students</p>
+  <p><b>Time:</b> 35–45 minutes</p>
+  <p>Design a network for a new college campus with Administration, Computer Studies, Library, and Outdoor Wi-Fi areas.</p>
+</section>
+
+<section class="slide">
+  <h2>Group Activity: Required Design</h2>
+  <div class="diagram">Internet → Router/Firewall → Core Switch → Buildings → Switches/APs → Users</div>
+  <p>Use twisted-pair Ethernet, fiber optics, Wi-Fi, or other appropriate media.</p>
+</section>
+
+<section class="slide">
+  <h2>Group Activity: Decision Factors</h2>
+  <div class="grid cols3">
+    <div class="card"><p>Speed</p></div>
+    <div class="card"><p>Distance</p></div>
+    <div class="card"><p>Cost</p></div>
+    <div class="card"><p>Interference</p></div>
+    <div class="card"><p>Mobility</p></div>
+    <div class="card"><p>Reliability</p></div>
+    <div class="card"><p>Security</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Activity Rubric</h2>
+  <table>
+    <tr><th>Criteria</th><th>Points</th></tr>
+    <tr><td>Correct selection of network media</td><td>25</td></tr>
+    <tr><td>Technical explanation</td><td>20</td></tr>
+    <tr><td>Network diagram accuracy</td><td>20</td></tr>
+    <tr><td>Application of real-world considerations</td><td>15</td></tr>
+    <tr><td>Team explanation/presentation</td><td>10</td></tr>
+    <tr><td>Organization and clarity</td><td>10</td></tr>
+    <tr><th>Total</th><th>100</th></tr>
+  </table>
+</section>
+
+<section class="slide center">
+  <h2>Lecture Summary</h2>
+  <p class="big">Copper uses electrical signals.</p>
+  <p class="big">Fiber uses light.</p>
+  <p class="big">Wireless uses electromagnetic waves.</p>
+  <p class="quote">The correct medium affects performance, reliability, scalability, security, cost, and user experience.</p>
+</section>
+
+<section class="slide center">
+  <h1>End of Lecture</h1>
+  <p class="subtitle">Questions?</p>
+</section>
+
+<div class="footer">
+  <span id="count">Slide 1</span>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+</div>
+<div class="nav">
+  <button onclick="prevSlide()">◀ Prev</button>
+  <button onclick="nextSlide()">Next ▶</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let index = 0;
+  const count = document.getElementById('count');
+  const bar = document.getElementById('bar');
+
+  function showSlide(i){
+    slides[index].classList.remove('active');
+    index = (i + slides.length) % slides.length;
+    slides[index].classList.add('active');
+    count.textContent = `Slide ${index + 1} / ${slides.length}`;
+    bar.style.width = `${((index + 1) / slides.length) * 100}%`;
+  }
+  function nextSlide(){ showSlide(index + 1); }
+  function prevSlide(){ showSlide(index - 1); }
+  document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') nextSlide();
+    if(e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
+    if(e.key === 'Home') showSlide(0);
+    if(e.key === 'End') showSlide(slides.length - 1);
+  });
+  showSlide(0);
+</script>
+</body>
+</html>
